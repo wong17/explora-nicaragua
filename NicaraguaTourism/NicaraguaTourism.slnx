@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="NicaraguaTourism.Bll/NicaraguaTourism.Bll.csproj" />
+  <Project Path="NicaraguaTourism.Common/NicaraguaTourism.Common.csproj" />
+  <Project Path="NicaraguaTourism.Dal/NicaraguaTourism.Dal.csproj" />
+  <Project Path="NicaraguaTourism.Entities/NicaraguaTourism.Entities.csproj" />
+  <Project Path="NicaraguaTourism.WebAPI/NicaraguaTourism.WebAPI.csproj" />
+</Solution>
