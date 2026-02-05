@@ -8,24 +8,48 @@ namespace NicaraguaTourism.Bll.Implements
 {
     public class FavoriteBll(IFavoriteRepository repository) : BllBase, IFavoriteBll
     {
-        public Task<ApiResponse<bool>> Create(FavoriteInteractionDto createDto)
+        public async Task<ApiResponse<bool>> Create(FavoriteInteractionDto createDto)
         {
-            throw new NotImplementedException();
+            if (createDto.UserId <= 0 || createDto.DestinationId <= 0)
+            {
+                return CreateValidationApiResponse<bool>("Usuario o Destino no válidos.");
+            }
+
+            var dalResponse = await repository.Create(createDto);
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<bool>> Delete(FavoriteInteractionDto dto)
+        public async Task<ApiResponse<bool>> Delete(FavoriteInteractionDto dto)
         {
-            throw new NotImplementedException();
+            if (dto.UserId <= 0 || dto.DestinationId <= 0)
+            {
+                return CreateValidationApiResponse<bool>("Usuario o Destino no válidos.");
+            }
+
+            var dalResponse = await repository.Delete(dto);
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllById(int id)
+        public async Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllById(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                return CreateValidationApiResponse<IEnumerable<FavoriteDto>>("El ID de usuario no es válido.");
+            }
+
+            var dalResponse = await repository.GetAllById(id);
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto)
+        public async Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto)
         {
-            throw new NotImplementedException();
+            if (interactionDto.UserId <= 0 || interactionDto.DestinationId <= 0)
+            {
+                return CreateSuccessApiResponse(false);
+            }
+
+            var dalResponse = await repository.IsFavorite(interactionDto);
+            return MapApiResponse(dalResponse, result => result);
         }
     }
 }

@@ -38,6 +38,14 @@ namespace NicaraguaTourism.Dal.Repository.Implements
             return MapJsonToApiResponse<IEnumerable<UserDto>>(jsonResult, "No se encontraron usuarios.");
         }
 
+        public async Task<User?> GetByEmail(string email)
+        {
+            var parameters = new { Email = email };
+            var user = await _connector.QuerySingleOrDefaultAsync<User>("uspGetUserByEmail", parameters);
+
+            return user;
+        }
+
         public async Task<ApiResponse<UserDto>> GetById(int id)
         {
             var parameters = new { UserId = id };

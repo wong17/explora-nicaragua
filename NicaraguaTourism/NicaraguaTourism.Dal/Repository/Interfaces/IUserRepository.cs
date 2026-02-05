@@ -13,5 +13,6 @@ namespace NicaraguaTourism.Dal.Repository.Interfaces
         IRepositoryGetAll<UserDto>
     {
         Task<ApiResponse<int>> Login(UserLoginDto loginDto);
+        Task<User?> GetByEmail(string email);
     }
 }

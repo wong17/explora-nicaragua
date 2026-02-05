@@ -8,29 +8,92 @@ namespace NicaraguaTourism.Bll.Implements
 {
     public class DestinationBll(IDestinationRepository repository) : BllBase, IDestinationBll
     {
-        public Task<ApiResponse<int>> Create(DestinationRegisterDto createDto)
+        public async Task<ApiResponse<int>> Create(DestinationRegisterDto createDto, int createdBy)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(createDto.Name) || string.IsNullOrEmpty(createDto.ShortDescription))
+            {
+                return CreateValidationApiResponse<int>("El nombre y la descripción corta son obligatorios.");
+            }
+
+            if (createdBy <= 0) 
+            {
+                return CreateValidationApiResponse<int>("El usuario no es válido");
+            }
+
+            if (createDto.Images == null || createDto.Images.Count == 0)
+            {
+                return CreateValidationApiResponse<int>("Debes agregar al menos una imagen para el destino.");
+            }
+
+            if (createDto.Latitude.HasValue && (createDto.Latitude < -90 || createDto.Latitude > 90))
+            {
+                return CreateValidationApiResponse<int>("La latitud debe estar entre -90 y 90.");
+            }
+
+            if (createDto.Longitude.HasValue && (createDto.Longitude < -180 || createDto.Longitude > 180))
+            {
+                return CreateValidationApiResponse<int>("La longitud debe estar entre -180 y 180.");
+            }
+
+            var dalResponse = await repository.Create(createDto, createdBy);
+
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<bool>> Delete(int id)
+        public async Task<ApiResponse<bool>> Delete(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                return CreateValidationApiResponse<bool>("El ID del destino no es válido.");
+            }
+
+            var dalResponse = await repository.Delete(id);
+
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<IEnumerable<DestinationDto>>> GetAll()
+        public async Task<ApiResponse<IEnumerable<DestinationDto>>> GetAll()
         {
-            throw new NotImplementedException();
+            var dalResponse = await repository.GetAll();
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<DestinationDto>> GetById(int id)
+        public async Task<ApiResponse<DestinationDto>> GetById(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                return CreateValidationApiResponse<DestinationDto>("El ID del destino no es válido.");
+            }
+
+            var dalResponse = await repository.GetById(id);
+            return MapApiResponse(dalResponse, result => result);
         }
 
-        public Task<ApiResponse<bool>> Update(DestinationUpdateDto updateDto)
+        public async Task<ApiResponse<bool>> Update(DestinationUpdateDto updateDto, int modifiedBy)
         {
-            throw new NotImplementedException();
+            if (updateDto.DestinationId <= 0)
+            {
+                return CreateValidationApiResponse<bool>("El ID del destino no es válido.");
+            }
+
+            if (modifiedBy <= 0)
+            {
+                return CreateValidationApiResponse<bool>("El usuario no es válido");
+            }
+
+            if (string.IsNullOrEmpty(updateDto.Name) || string.IsNullOrEmpty(updateDto.ShortDescription))
+            {
+                return CreateValidationApiResponse<bool>("El nombre y la descripción corta son obligatorios.");
+            }
+
+            if (updateDto.Images == null || updateDto.Images.Count == 0)
+            {
+                return CreateValidationApiResponse<bool>("El destino debe tener al menos una imagen.");
+            }
+
+            var dalResponse = await repository.Update(updateDto, modifiedBy);
+
+            return MapApiResponse(dalResponse, result => result);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace NicaraguaTourism.Bll.Mappings
         
         [MapperIgnoreTarget(nameof(User.Password))]
         [MapperIgnoreTarget(nameof(User.CreatedAt))]
-        public partial User UpdateUserFromDto(UserUpdateDto dto);
+        public partial User UserUpdateToDto(UserUpdateDto dto);
 
         [MapperIgnoreTarget(nameof(UserDto.RoleName))]
         [MapperIgnoreSource(nameof(User.Password))]
@@ -30,7 +30,7 @@ namespace NicaraguaTourism.Bll.Mappings
         [MapperIgnoreTarget(nameof(Destination.CreatedAt))]
         [MapperIgnoreSource(nameof(DestinationUpdateDto.Images))]
         [MapperIgnoreSource(nameof(DestinationUpdateDto.Activities))]
-        public partial Destination UpdateDestinationFromDto(DestinationUpdateDto dto);
+        public partial Destination DestinationUpdateToDto(DestinationUpdateDto dto);
 
         [MapperIgnoreSource(nameof(Destination.AdminId))]
         [MapperIgnoreSource(nameof(Destination.CreatedAt))]
