@@ -8,24 +8,48 @@ namespace NicaraguaTourism.Dal.Repository.Implements
 {
     public class FavoriteRepository(ISqlConnector connector) : RepositoryBase(connector), IFavoriteRepository
     {
-        public Task<ApiResponse<bool>> Create(FavoriteInteractionDto createDto)
+        public async Task<ApiResponse<bool>> Create(FavoriteInteractionDto createDto)
         {
-            throw new NotImplementedException();
+            var parameters = new
+            {
+                createDto.UserId,
+                createDto.DestinationId
+            };
+            var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspAddFavorite", parameters);
+
+            return MapToApiResponse<bool>(spResponse);
         }
 
-        public Task<ApiResponse<bool>> Delete(FavoriteInteractionDto id)
+        public async Task<ApiResponse<bool>> Delete(FavoriteInteractionDto dto)
         {
-            throw new NotImplementedException();
+            var parameters = new
+            {
+                dto.UserId,
+                dto.DestinationId
+            };
+            var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspRemoveFavorite", parameters);
+
+            return MapToApiResponse<bool>(spResponse);
         }
 
-        public Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllById(int id)
+        public async Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllById(int id)
         {
-            throw new NotImplementedException();
+            var parameters = new { UserId = id };
+            var jsonResult = await _connector.QueryJsonAsync("uspGetUserFavorites", parameters);
+
+            return MapJsonToApiResponse<IEnumerable<FavoriteDto>>(jsonResult, "Aún no tienes destinos favoritos.");
         }
 
-        public Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto)
+        public async Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto)
         {
-            throw new NotImplementedException();
+            var parameters = new
+            {
+                interactionDto.UserId,
+                interactionDto.DestinationId
+            };
+            var isFavorite = await _connector.QuerySingleOrDefaultAsync<bool>("uspCheckIsFavorite", parameters);
+
+            return CreateSuccessApiResponse(isFavorite);
         }
     }
 }

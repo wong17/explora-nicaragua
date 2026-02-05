@@ -19,6 +19,7 @@ namespace NicaraguaTourism.Dal.Repository.Implements
                 createDto.RoleId
             };
             var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspRegisterUser", parameters);
+
             return MapToApiResponse<int>(spResponse);
         }
 
@@ -26,12 +27,14 @@ namespace NicaraguaTourism.Dal.Repository.Implements
         {
             var parameters = new { UserId = id };
             var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspDeleteUser", parameters);
+            
             return MapToApiResponse<bool>(spResponse);
         }
 
         public async Task<ApiResponse<IEnumerable<UserDto>>> GetAll()
         {
             var jsonResult = await _connector.QueryJsonAsync("uspGetUsers");
+            
             return MapJsonToApiResponse<IEnumerable<UserDto>>(jsonResult, "No se encontraron usuarios.");
         }
 
@@ -54,8 +57,8 @@ namespace NicaraguaTourism.Dal.Repository.Implements
                 loginDto.Email,
                 loginDto.Password
             };
-
             var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspLoginUser", parameters);
+            
             return MapToApiResponse<int>(spResponse);
         }
 
@@ -68,8 +71,8 @@ namespace NicaraguaTourism.Dal.Repository.Implements
                 updateDto.Email,
                 updateDto.RoleId
             };
-
             var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspEditUser", parameters);
+
             return MapToApiResponse<bool>(spResponse);
         }
     }

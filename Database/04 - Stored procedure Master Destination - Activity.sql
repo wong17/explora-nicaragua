@@ -225,42 +225,75 @@ GO
 
 -- Obtener destinos turísticos
 CREATE OR ALTER PROCEDURE uspGetDestinations (
-    @DestinationId INT = NULL -- Si es NULL trae todos, si tiene valor trae uno
+    @DestinationId INT = NULL
 )
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
-        d.DestinationId,
-        d.[Name],
-        d.ShortDescription,
-        d.LongDescription,
-        d.[Location],
-        d.Latitude,
-        d.Longitude,
-        d.AverageWeather,
-        d.AccessDifficulty,
-        
-        -- Sub-consulta JSON para Imágenes
-        (
-            SELECT ImageUrl, IsCover, AltText
-            FROM DestinationImage di
-            WHERE di.DestinationId = d.DestinationId
-            FOR JSON PATH
-        ) AS Images,
+    -- 
+    IF @DestinationId IS NOT NULL
+    BEGIN
+        SELECT 
+            d.DestinationId,
+            d.[Name],
+            d.ShortDescription,
+            d.LongDescription,
+            d.[Location],
+            d.Latitude,
+            d.Longitude,
+            d.AverageWeather,
+            d.AccessDifficulty,
+            
+            JSON_QUERY((
+                SELECT ImageUrl, IsCover, AltText
+                FROM DestinationImage di
+                WHERE di.DestinationId = d.DestinationId
+                FOR JSON PATH
+            )) AS Images,
 
-        -- Sub-consulta JSON para Actividades
-        (
-            SELECT ActivityName, IconName
-            FROM Activity a
-            WHERE a.DestinationId = d.DestinationId
-            FOR JSON PATH
-        ) AS Activities
+            JSON_QUERY((
+                SELECT ActivityName, IconName
+                FROM Activity a
+                WHERE a.DestinationId = d.DestinationId
+                FOR JSON PATH
+            )) AS Activities
 
-    FROM Destination d
-    WHERE (@DestinationId IS NULL OR d.DestinationId = @DestinationId)
-    ORDER BY d.Name ASC
-    FOR JSON PATH, INCLUDE_NULL_VALUES; -- Devuelve un array JSON directo
+        FROM Destination d
+        WHERE d.DestinationId = @DestinationId
+        FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER;
+    END
+    -- 
+    ELSE
+    BEGIN
+        SELECT 
+            d.DestinationId,
+            d.[Name],
+            d.ShortDescription,
+            d.LongDescription,
+            d.[Location],
+            d.Latitude,
+            d.Longitude,
+            d.AverageWeather,
+            d.AccessDifficulty,
+            
+            JSON_QUERY((
+                SELECT ImageUrl, IsCover, AltText
+                FROM DestinationImage di
+                WHERE di.DestinationId = d.DestinationId
+                FOR JSON PATH
+            )) AS Images,
+
+            JSON_QUERY((
+                SELECT ActivityName, IconName
+                FROM Activity a
+                WHERE a.DestinationId = d.DestinationId
+                FOR JSON PATH
+            )) AS Activities
+
+        FROM Destination d
+        ORDER BY d.Name ASC
+        FOR JSON PATH, INCLUDE_NULL_VALUES;
+    END
 END
 GO

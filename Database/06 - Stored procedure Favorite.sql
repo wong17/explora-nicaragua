@@ -4,33 +4,32 @@ GO
 -- AGREGAR A FAVORITOS (Add to Wishlist)
 CREATE OR ALTER PROCEDURE uspAddFavorite (
     @UserId INT,
-    @DestinationId INT,
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT
+    @DestinationId INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = '';
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
 
     -- Validar que el usuario exista
     IF NOT EXISTS (SELECT 1 FROM [User] WHERE UserId = @UserId)
     BEGIN
-        SET @IsSuccess = 2; SET @Message = 'El usuario no existe.'; 
+        SELECT 2 AS IsSuccess, 'El usuario no existe.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     -- Validar que el destino exista
     IF NOT EXISTS (SELECT 1 FROM Destination WHERE DestinationId = @DestinationId)
     BEGIN
-        SET @IsSuccess = 2; SET @Message = 'El destino no existe.'; 
+        SELECT 2 AS IsSuccess, 'El destino no existe.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     -- Validar si YA es favorito (Evitar duplicados)
     IF EXISTS (SELECT 1 FROM Favorite WHERE UserId = @UserId AND DestinationId = @DestinationId)
     BEGIN
-        SET @IsSuccess = 1; SET @Message = 'Este destino ya está en tus favoritos.'; 
+        SELECT 1 AS IsSuccess, 'Este destino ya está en tus favoritos.' AS [Message], 0 AS Result;
         RETURN;
     END
 
@@ -38,10 +37,10 @@ BEGIN
         INSERT INTO Favorite (UserId, DestinationId)
         VALUES (@UserId, @DestinationId);
 
-        SET @IsSuccess = 0; SET @Message = 'Agregado a favoritos correctamente.';
+        SELECT 0 AS IsSuccess, 'Agregado a favoritos correctamente.' AS [Message], 0 AS Result;
     END TRY
     BEGIN CATCH
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE();
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO
@@ -49,14 +48,13 @@ GO
 -- ELIMINAR DE FAVORITOS (Remove from Wishlist)
 CREATE OR ALTER PROCEDURE uspRemoveFavorite (
     @UserId INT,
-    @DestinationId INT,
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT
+    @DestinationId INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = '';
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
 
     BEGIN TRY
         DELETE FROM Favorite 
@@ -64,15 +62,15 @@ BEGIN
 
         IF @@ROWCOUNT = 0
         BEGIN
-            SET @IsSuccess = 2; SET @Message = 'El destino no estaba en tus favoritos.';
+            SELECT 2 AS IsSuccess, 'El destino no estaba en tus favoritos.' AS [Message], 0 AS Result;
         END
         ELSE
         BEGIN
-            SET @IsSuccess = 0; SET @Message = 'Eliminado de favoritos.';
+            SELECT 0 AS IsSuccess, 'Eliminado de favoritos.' AS [Message], 0 AS Result;
         END
     END TRY
     BEGIN CATCH
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE();
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO
@@ -122,19 +120,16 @@ GO
 -- Útil para saber si pintar el corazón de rojo o gris al entrar al detalle de un lugar.
 CREATE OR ALTER PROCEDURE uspCheckIsFavorite (
     @UserId INT,
-    @DestinationId INT,
-    @IsFavorite BIT OUTPUT -- 1 = Sí, 0 = No
+    @DestinationId INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
     
+    --
     IF EXISTS (SELECT 1 FROM Favorite WHERE UserId = @UserId AND DestinationId = @DestinationId)
-        SET @IsFavorite = 1;
+        SELECT CAST(1 AS BIT) AS IsFavorite;
     ELSE
-        SET @IsFavorite = 0;
-        
-    -- 
-    SELECT @IsFavorite AS IsFavorite;
+        SELECT CAST(0 AS BIT) AS IsFavorite;
 END
 GO
