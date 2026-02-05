@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NicaraguaTourism.Bll.Interfaces;
 using NicaraguaTourism.Common.Runtime;
 using NicaraguaTourism.Entities.Dtos;
@@ -8,29 +6,30 @@ using NicaraguaTourism.WebAPI.Controllers.Base;
 
 namespace NicaraguaTourism.WebAPI.Controllers
 {
-    [Authorize]
     [Route("api/users")]
     public class UserController(IUserBll userBll) : ApiControllerBase
     {
         [HttpPost("register")]
         [ProducesResponseType(typeof(ApiResponse<int>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Register([FromBody] UserRegisterDto createDto)
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto registerDto)
         {
-            var response = await userBll.CreateAsync(createDto);
+            var response = await userBll.CreateAsync(registerDto);
             return HandleApiResponse(response);
         }
 
-        [HttpGet("get_by_id/{id:int}")]
-        [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        [HttpPost("login")]
+        [ProducesResponseType(typeof(ApiResponse<int>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
         {
-            var response = await userBll.GetByIdAsync(id);
+            var response = await userBll.Login(loginDto);
             return HandleApiResponse(response);
         }
 
         [HttpPut("update")]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update([FromBody] UserUpdateDto updateDto)
         {
@@ -44,6 +43,15 @@ namespace NicaraguaTourism.WebAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var response = await userBll.DeleteAsync(id);
+            return HandleApiResponse(response);
+        }
+
+        [HttpGet("get_by_id/{id:int}")]
+        [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var response = await userBll.GetByIdAsync(id);
             return HandleApiResponse(response);
         }
 
