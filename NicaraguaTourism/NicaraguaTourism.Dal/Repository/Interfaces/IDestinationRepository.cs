@@ -5,7 +5,7 @@ namespace NicaraguaTourism.Dal.Repository.Interfaces
 {
     public interface IDestinationRepository :
         IRepositoryCreateAudited<DestinationRegisterDto, int, int>,
-        IRepositoryUpdateAudited<DestinationEditDto, bool, int>,
+        IRepositoryUpdateAudited<DestinationUpdateDto, bool, int>,
         IRepositoryDelete<int, bool>,
         IRepositoryGetById<int, DestinationDto>,
         IRepositoryGetAll<DestinationDto>

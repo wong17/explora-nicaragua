@@ -11,7 +11,7 @@
         public decimal? Longitude { get; set; }
         public string? AverageWeather { get; set; }
         public string? AccessDifficulty { get; set; }
-        public List<DestinationImageDto> Images { get; set; } = new();
-        public List<ActivityDto> Activities { get; set; } = new();
+        public List<DestinationImageInsertDto> Images { get; set; } = new();
+        public List<ActivityInsertDto> Activities { get; set; } = new();
     }
 }

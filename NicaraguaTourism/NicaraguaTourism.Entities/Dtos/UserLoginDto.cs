@@ -1,8 +1,14 @@
-﻿namespace NicaraguaTourism.Entities.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NicaraguaTourism.Entities.Dtos
 {
     public class UserLoginDto
     {
+        [Required(ErrorMessage = "El correo electrónico es requerido.")]
+        [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
         public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es requerida.")]
         public string Password { get; set; } = string.Empty;
     }
 }

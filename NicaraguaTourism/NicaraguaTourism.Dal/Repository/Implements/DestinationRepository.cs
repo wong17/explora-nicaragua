@@ -41,7 +41,7 @@ namespace NicaraguaTourism.Dal.Repository.Implements
             return MapJsonToApiResponse<DestinationDto>(jsonResult, "Destino turístico no encontrado.");
         }
 
-        public async Task<ApiResponse<bool>> Update(DestinationEditDto updateDto, int sessionUserId)
+        public async Task<ApiResponse<bool>> Update(DestinationUpdateDto updateDto, int sessionUserId)
         {
             var jsonInput = JsonSerializer.Serialize(updateDto, _jsonOptions);
             var parameters = new { Json = jsonInput, ModifiedBy = sessionUserId };

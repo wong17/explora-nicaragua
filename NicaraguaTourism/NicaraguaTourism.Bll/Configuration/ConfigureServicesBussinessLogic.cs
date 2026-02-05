@@ -12,7 +12,7 @@ namespace NicaraguaTourism.Bll.Configuration
             /* Agregar primero servicios de Data Access Layer (DAL) */
             services.AddDataAccessLayer();
             /* Agregar configuración de Mappers */
-            services.AddSingleton<Mapper>();
+            services.AddSingleton<TourismMapper>();
             /* Agregar Argon2HashingServices */
             services.AddScoped<IPasswordHashingService, Argon2HashingService>();
         }
