@@ -6,50 +6,44 @@ CREATE OR ALTER PROCEDURE uspRegisterUser (
     @FullName NVARCHAR(100),
     @Email NVARCHAR(100),
     @Password NVARCHAR(255), -- Ya viene encriptada desde la API
-    @RoleId INT,
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT,
-    @Result INT OUTPUT
+    @RoleId INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = ''; SET @Result = 0;
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
+    DECLARE @Result INT = 0;
 
     -- VALIDACIONES OBLIGATORIAS
     IF @FullName IS NULL OR RTRIM(@FullName) = ''
     BEGIN
-        SET @IsSuccess = 1; SET @Message = 'El nombre completo es obligatorio.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result; 
+        SELECT 1 AS IsSuccess, 'El nombre completo es obligatorio.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     IF @Email IS NULL OR RTRIM(@Email) = ''
     BEGIN
-        SET @IsSuccess = 1; SET @Message = 'El correo electrónico es obligatorio.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result; 
+        SELECT 1 AS IsSuccess, 'El correo electrónico es obligatorio.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     IF @Password IS NULL OR RTRIM(@Password) = ''
     BEGIN
-        SET @IsSuccess = 1; SET @Message = 'La contraseña es obligatoria.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result; 
+        SELECT 1 AS IsSuccess, 'La contraseña es obligatoria.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     IF NOT EXISTS (SELECT 1 FROM [Role] WHERE RoleId = @RoleId)
     BEGIN
-        SET @IsSuccess = 1; SET @Message = 'El Rol seleccionado no es válido.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result; 
+        SELECT 1 AS IsSuccess, 'El Rol seleccionado no es válido.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     -- VALIDAR DUPLICADOS (Email único)
     IF EXISTS (SELECT 1 FROM [User] WHERE Email = @Email)
     BEGIN
-        SET @IsSuccess = 2; SET @Message = 'El correo electrónico ya está registrado.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result; 
+        SELECT 2 AS IsSuccess, 'El correo electrónico ya está registrado.' AS [Message], 0 AS Result;
         RETURN;
     END
 
@@ -59,14 +53,10 @@ BEGIN
         VALUES (@FullName, @Email, @Password, @RoleId);
 
         SET @Result = SCOPE_IDENTITY();
-        SET @IsSuccess = 0; SET @Message = 'Usuario registrado exitosamente.';
-
-        --
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result;
+        SELECT 0 AS IsSuccess, 'Usuario registrado exitosamente.' AS [Message], @Result AS Result;
     END TRY
     BEGIN CATCH
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE();
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result;
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO
@@ -76,28 +66,25 @@ CREATE OR ALTER PROCEDURE uspEditUser (
     @UserId INT,
     @FullName NVARCHAR(100),
     @Email NVARCHAR(100),
-    @RoleId INT,
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT
+    @RoleId INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = '';
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
 
     -- Validar existencia
     IF NOT EXISTS (SELECT 1 FROM [User] WHERE UserId = @UserId)
     BEGIN
-        SET @IsSuccess = 2; SET @Message = 'El usuario no existe.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message]; 
+        SELECT 2 AS IsSuccess, 'El usuario no existe.' AS [Message], 0 AS Result;
         RETURN;
     END
 
     -- Validar que el nuevo email no pertenezca a OTRO usuario
     IF EXISTS (SELECT 1 FROM [User] WHERE Email = @Email AND UserId <> @UserId)
     BEGIN
-        SET @IsSuccess = 2; SET @Message = 'El correo ya está en uso por otro usuario.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message]; 
+        SELECT 2 AS IsSuccess, 'El correo ya está en uso por otro usuario.' AS [Message], 0 AS Result;
         RETURN;
     END
 
@@ -109,12 +96,10 @@ BEGIN
             RoleId = @RoleId
         WHERE UserId = @UserId;
 
-        SET @IsSuccess = 0; SET @Message = 'Usuario actualizado correctamente.';
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message];
+        SELECT 0 AS IsSuccess, 'Usuario actualizado correctamente.' AS [Message], @UserId AS Result;
     END TRY
     BEGIN CATCH
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE();
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message];
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO
@@ -224,5 +209,25 @@ BEGIN
         
         SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS [Result];
     END
+END
+GO
+
+-- Obtener usuario por Email (Para Login interno)
+CREATE OR ALTER PROCEDURE uspGetUserByEmail (
+    @Email NVARCHAR(100)
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP 1
+        UserId,
+        FullName,
+        Email,
+        [Password],
+        RoleId,
+        CreatedAt
+    FROM [User]
+    WHERE Email = @Email;
 END
 GO

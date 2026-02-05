@@ -52,7 +52,7 @@ namespace NicaraguaTourism.Dal.Repository.Implements
             var result = await _connector.QuerySingleOrDefaultAsync<UserDto>("uspGetUsers", parameters);
             if (result is null)
             {
-                return CreateNotFoundApiResponse<UserDto>("Tipo de operación de reembolso no encontrada.");
+                return CreateNotFoundApiResponse<UserDto>("Usuario no encontrado.");
             }
 
             return CreateSuccessApiResponse(result);
