@@ -4,15 +4,14 @@ GO
 -- Registrar nuevo destino turístico (y sus detalles)
 CREATE OR ALTER PROCEDURE uspRegisterDestination (
     @Json NVARCHAR(MAX),
-    @CreatedBy INT, -- El ID del Admin
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT,
-    @Result INT OUTPUT
+    @CreatedBy INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = ''; SET @Result = 0;
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
+    DECLARE @Result INT = 0;
 
     --
     DECLARE @Name NVARCHAR(100), @ShortDesc NVARCHAR(300), @LongDesc NVARCHAR(MAX),
@@ -62,37 +61,38 @@ BEGIN
 
         IF @IsSuccess <> 0
         BEGIN
-            ROLLBACK TRAN; SET @Result = 0; RETURN;
+            ROLLBACK TRAN; 
+            SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS Result;
+            RETURN;
         END
 
         -- Insertar Imágenes
         EXEC uspInsertDestinationImagesInternal @NewId, @CreatedBy, @ImagesTVP, @IsSuccess OUTPUT, @Message OUTPUT;
         IF @IsSuccess <> 0
         BEGIN
-            ROLLBACK TRAN; SET @Result = 0; RETURN;
+            ROLLBACK TRAN; 
+            SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS Result;
+            RETURN;
         END
 
         -- Insertar Actividades
         EXEC uspInsertActivitiesInternal @NewId, @CreatedBy, @ActivitiesTVP, @IsSuccess OUTPUT, @Message OUTPUT;
         IF @IsSuccess <> 0
         BEGIN
-            ROLLBACK TRAN; SET @Result = 0; RETURN;
+            ROLLBACK TRAN; 
+            SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS Result;
+            RETURN;
         END
 
         COMMIT TRAN;
-        SET @IsSuccess = 0; SET @Message = 'Destino registrado correctamente.'; SET @Result = @NewId;
-        
-        --
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result;
+        SELECT 0 AS IsSuccess, 'Destino registrado correctamente.' AS [Message], @NewId AS Result;
 
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 
             ROLLBACK TRAN;
         
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE(); SET @Result = 0;
-        
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result;
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO
@@ -100,15 +100,14 @@ GO
 -- Editar destino turístico (y sus detalles)
 CREATE OR ALTER PROCEDURE uspEditDestination (
     @Json NVARCHAR(MAX),
-    @ModifiedBy INT, -- Admin que edita
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT,
-    @Result INT OUTPUT
+    @ModifiedBy INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = ''; SET @Result = 0;
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
+    DECLARE @Result INT = 0;
 
     --
     DECLARE @DestId INT;
@@ -159,14 +158,18 @@ BEGIN
         
         IF @IsSuccess <> 0
         BEGIN
-            ROLLBACK TRAN; SET @Result = 0; RETURN;
+            ROLLBACK TRAN; 
+            SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS Result;
+            RETURN;
         END
 
         -- Limpiar Detalles Antiguos
         EXEC uspClearDestinationDetailsInternal @DestId, @IsSuccess OUTPUT, @Message OUTPUT;
         IF @IsSuccess <> 0
         BEGIN
-            ROLLBACK TRAN; SET @Result = 0; RETURN;
+            ROLLBACK TRAN; 
+            SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS Result;
+            RETURN;
         END
 
         -- Insertar Nuevos Detalles
@@ -174,51 +177,42 @@ BEGIN
         EXEC uspInsertActivitiesInternal @DestId, @ModifiedBy, @ActivitiesTVP, @IsSuccess OUTPUT, @Message OUTPUT;
 
         COMMIT TRAN;
-        SET @IsSuccess = 0; SET @Message = 'Destino actualizado correctamente.'; SET @Result = @DestId;
-        
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result;
+        SELECT 0 AS IsSuccess, 'Destino actualizado correctamente.' AS [Message], @DestId AS Result;
 
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 
             ROLLBACK TRAN;
         
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE(); SET @Result = 0;
-
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @Result AS Result;
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO
 
 -- Eliminar destino turístico (y sus detalles)
 CREATE OR ALTER PROCEDURE uspDeleteDestination (
-    @DestinationId INT,
-    @IsSuccess INT OUTPUT,
-    @Message NVARCHAR(255) OUTPUT
+    @DestinationId INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    SET @IsSuccess = 0; SET @Message = '';
+    DECLARE @IsSuccess INT = 0;
+    DECLARE @Message NVARCHAR(255) = '';
 
     BEGIN TRY
         DELETE FROM Destination WHERE DestinationId = @DestinationId;
         
         IF @@ROWCOUNT = 0
         BEGIN
-             SET @IsSuccess = 2; SET @Message = 'El destino no existe.';
+             SELECT 2 AS IsSuccess, 'El destino no existe.' AS [Message], 0 AS Result;
         END
         ELSE
         BEGIN
-             SET @IsSuccess = 0; SET @Message = 'Destino eliminado (y sus dependencias).';
+             SELECT 0 AS IsSuccess, 'Destino eliminado exitosamente.' AS [Message], 0 AS Result;
         END
-        
-        -- 
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message];
     END TRY
     BEGIN CATCH
-        SET @IsSuccess = 3; SET @Message = ERROR_MESSAGE();
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message];
+        SELECT 3 AS IsSuccess, ERROR_MESSAGE() AS [Message], 0 AS Result;
     END CATCH
 END
 GO

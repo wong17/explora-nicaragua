@@ -71,13 +71,13 @@ namespace NicaraguaTourism.Bll.Implements
             var user = await repository.GetByEmail(loginDto.Email);
             if (user is null)
             {
-                return CreateValidationApiResponse<int>("Credenciales incorrectas.");
+                return CreateNotFoundApiResponse<int>("Credenciales incorrectas, el correo o la contraseña no son correctos.");
             }
 
             var isPasswordValid = hashingService.VerifyPassword(loginDto.Password, user.Password);
             if (!isPasswordValid)
             {
-                return CreateValidationApiResponse<int>("Credenciales incorrectas.");
+                return CreateNotFoundApiResponse<int>("Credenciales incorrectas, el correo o la contraseña no son correctos.");
             }
 
             return CreateSuccessApiResponse(user.UserId, $"Bienvenido, {user.FullName}.");
