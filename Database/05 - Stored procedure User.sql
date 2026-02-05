@@ -121,24 +121,39 @@ GO
 
 -- OBTENER USUARIOS (Get)
 CREATE OR ALTER PROCEDURE uspGetUsers (
-    @UserId INT = NULL -- Si es NULL trae todos
+    @UserId INT = NULL
 )
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
-        u.UserId,
-        u.FullName,
-        u.Email,
-        u.RoleId,
-        r.RoleName,
-        u.CreatedAt
-    FROM [User] u
-    INNER JOIN [Role] r ON u.RoleId = r.RoleId
-    WHERE (@UserId IS NULL OR u.UserId = @UserId)
-    ORDER BY u.FullName ASC
-    FOR JSON PATH, INCLUDE_NULL_VALUES;
+    IF @UserId IS NOT NULL
+    BEGIN
+        SELECT 
+            u.UserId,
+            u.FullName,
+            u.Email,
+            u.RoleId,
+            r.RoleName,
+            u.CreatedAt
+        FROM [User] u
+        INNER JOIN [Role] r ON u.RoleId = r.RoleId
+        WHERE u.UserId = @UserId;
+    END
+    ELSE
+    BEGIN
+        SELECT 
+            u.UserId,
+            u.FullName,
+            u.Email,
+            u.RoleId,
+            r.RoleName,
+            u.CreatedAt
+        FROM [User] u
+        INNER JOIN [Role] r ON u.RoleId = r.RoleId
+        ORDER BY u.FullName ASC
+        FOR JSON PATH, INCLUDE_NULL_VALUES;
+    END
 END
 GO
 
@@ -176,7 +191,7 @@ GO
 -- LOGIN DE USUARIO (Validar Credenciales)
 CREATE OR ALTER PROCEDURE uspLoginUser (
     @Email NVARCHAR(100),
-    @Password NVARCHAR(255) -- Password encriptada que manda la API
+    @Password NVARCHAR(255)
 )
 AS
 BEGIN
@@ -184,41 +199,30 @@ BEGIN
     DECLARE @IsSuccess INT = 0;
     DECLARE @Message NVARCHAR(255) = '';
     DECLARE @UserId INT = 0;
+    DECLARE @FullName NVARCHAR(100) = '';
 
-    -- Buscamos al usuario por Email y Password
-    SELECT TOP 1 @UserId = UserId 
+    -- Buscamos ID y Nombre si coinciden credenciales
+    SELECT TOP 1 
+        @UserId = UserId, 
+        @FullName = FullName
     FROM [User] 
     WHERE Email = @Email AND [Password] = @Password;
 
+    --
     IF @UserId > 0
     BEGIN
-        -- Login Exitoso: Devolvemos Success y los datos del usuario (sin password)
-        SET @IsSuccess = 0; 
-        SET @Message = 'Bienvenido.';
+        SET @IsSuccess = 0;
+        SET @Message = 'Bienvenido, ' + @FullName + '.';
         
-        SELECT 
-            @IsSuccess AS IsSuccess, 
-            @Message AS [Message],
-            (
-                SELECT 
-                    u.UserId, 
-                    u.FullName, 
-                    u.Email, 
-                    u.RoleId, 
-                    r.RoleName 
-                FROM [User] u
-                INNER JOIN [Role] r ON u.RoleId = r.RoleId
-                WHERE u.UserId = @UserId
-                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
-            ) AS [Result]; -- Objeto User en JSON
+        --
+        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], @UserId AS [Result];
     END
     ELSE
     BEGIN
-        -- Login Fallido
-        SET @IsSuccess = 1; 
-        SET @Message = 'Credenciales incorrectas.';
+        SET @IsSuccess = 1;
+        SET @Message = 'El correo o la contraseña no son correctos.';
         
-        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], NULL AS [Result];
+        SELECT @IsSuccess AS IsSuccess, @Message AS [Message], 0 AS [Result];
     END
 END
 GO

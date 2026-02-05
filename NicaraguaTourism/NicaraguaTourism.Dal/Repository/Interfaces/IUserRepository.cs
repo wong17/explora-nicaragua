@@ -1,4 +1,5 @@
-﻿using NicaraguaTourism.Dal.Repository.Interfaces.Base;
+﻿using NicaraguaTourism.Common.Runtime;
+using NicaraguaTourism.Dal.Repository.Interfaces.Base;
 using NicaraguaTourism.Entities.Dtos;
 using NicaraguaTourism.Entities.Models;
 
@@ -11,5 +12,6 @@ namespace NicaraguaTourism.Dal.Repository.Interfaces
         IRepositoryGetById<int, UserDto>,
         IRepositoryGetAll<UserDto>
     {
+        Task<ApiResponse<int>> Login(UserLoginDto loginDto);
     }
 }
