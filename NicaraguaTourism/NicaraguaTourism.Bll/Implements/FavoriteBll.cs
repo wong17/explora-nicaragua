@@ -8,7 +8,7 @@ namespace NicaraguaTourism.Bll.Implements
 {
     public class FavoriteBll(IFavoriteRepository repository) : BllBase, IFavoriteBll
     {
-        public async Task<ApiResponse<bool>> Create(FavoriteInteractionDto createDto)
+        public async Task<ApiResponse<bool>> CreateAsync(FavoriteInteractionDto createDto)
         {
             if (createDto.UserId <= 0 || createDto.DestinationId <= 0)
             {
@@ -19,7 +19,7 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<bool>> Delete(FavoriteInteractionDto dto)
+        public async Task<ApiResponse<bool>> DeleteAsync(FavoriteInteractionDto dto)
         {
             if (dto.UserId <= 0 || dto.DestinationId <= 0)
             {
@@ -30,7 +30,7 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllById(int id)
+        public async Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllByIdAsync(int id)
         {
             if (id <= 0)
             {
@@ -41,7 +41,7 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto)
+        public async Task<ApiResponse<bool>> IsFavoriteAsync(FavoriteInteractionDto interactionDto)
         {
             if (interactionDto.UserId <= 0 || interactionDto.DestinationId <= 0)
             {

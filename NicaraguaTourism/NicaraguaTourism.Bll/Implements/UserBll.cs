@@ -10,7 +10,7 @@ namespace NicaraguaTourism.Bll.Implements
 {
     public class UserBll(IUserRepository repository, IPasswordHashingService hashingService, TourismMapper mapper) : BllBase, IUserBll
     {
-        public async Task<ApiResponse<int>> Create(UserRegisterDto createDto)
+        public async Task<ApiResponse<int>> CreateAsync(UserRegisterDto createDto)
         {
             if (string.IsNullOrEmpty(createDto.FullName) || string.IsNullOrEmpty(createDto.Password) || string.IsNullOrEmpty(createDto.Email))
             {
@@ -30,7 +30,7 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(response, result => result);
         }
 
-        public async Task<ApiResponse<bool>> Delete(int id)
+        public async Task<ApiResponse<bool>> DeleteAsync(int id)
         {
             if (id <= 0)
             {
@@ -42,14 +42,14 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<IEnumerable<UserDto>>> GetAll()
+        public async Task<ApiResponse<IEnumerable<UserDto>>> GetAllAsync()
         {
             var dalResponse = await repository.GetAll();
 
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<UserDto>> GetById(int id)
+        public async Task<ApiResponse<UserDto>> GetByIdAsync(int id)
         {
             if (id <= 0)
             {
@@ -83,7 +83,7 @@ namespace NicaraguaTourism.Bll.Implements
             return CreateSuccessApiResponse(user.UserId, $"Bienvenido, {user.FullName}.");
         }
 
-        public async Task<ApiResponse<bool>> Update(UserUpdateDto updateDto)
+        public async Task<ApiResponse<bool>> UpdateAsync(UserUpdateDto updateDto)
         {
             if (string.IsNullOrEmpty(updateDto.FullName) || string.IsNullOrEmpty(updateDto.Email))
             {

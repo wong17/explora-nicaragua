@@ -8,7 +8,7 @@ namespace NicaraguaTourism.Bll.Implements
 {
     public class DestinationBll(IDestinationRepository repository) : BllBase, IDestinationBll
     {
-        public async Task<ApiResponse<int>> Create(DestinationRegisterDto createDto, int createdBy)
+        public async Task<ApiResponse<int>> CreateAsync(DestinationRegisterDto createDto, int createdBy)
         {
             if (string.IsNullOrEmpty(createDto.Name) || string.IsNullOrEmpty(createDto.ShortDescription))
             {
@@ -40,7 +40,7 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<bool>> Delete(int id)
+        public async Task<ApiResponse<bool>> DeleteAsync(int id)
         {
             if (id <= 0)
             {
@@ -52,13 +52,13 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<IEnumerable<DestinationDto>>> GetAll()
+        public async Task<ApiResponse<IEnumerable<DestinationDto>>> GetAllAsync()
         {
             var dalResponse = await repository.GetAll();
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<DestinationDto>> GetById(int id)
+        public async Task<ApiResponse<DestinationDto>> GetByIdAsync(int id)
         {
             if (id <= 0)
             {
@@ -69,7 +69,7 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<bool>> Update(DestinationUpdateDto updateDto, int modifiedBy)
+        public async Task<ApiResponse<bool>> UpdateAsync(DestinationUpdateDto updateDto, int modifiedBy)
         {
             if (updateDto.DestinationId <= 0)
             {

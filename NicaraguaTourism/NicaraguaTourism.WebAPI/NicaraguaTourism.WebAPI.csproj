@@ -8,10 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.12.34" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\NicaraguaTourism.Bll\NicaraguaTourism.Bll.csproj" />
+    <ProjectReference Include="..\NicaraguaTourism.Common\NicaraguaTourism.Common.csproj" />
+    <ProjectReference Include="..\NicaraguaTourism.Entities\NicaraguaTourism.Entities.csproj" />
   </ItemGroup>
 
 </Project>
