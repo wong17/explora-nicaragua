@@ -3,6 +3,7 @@ using NicaraguaTourism.Bll.Interfaces;
 using NicaraguaTourism.Common.Runtime;
 using NicaraguaTourism.Entities.Dtos;
 using NicaraguaTourism.WebAPI.Controllers.Base;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NicaraguaTourism.WebAPI.Controllers
 {
@@ -11,18 +12,54 @@ namespace NicaraguaTourism.WebAPI.Controllers
     {
         [HttpPost("register")]
         [ProducesResponseType(typeof(ApiResponse<int>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Create([FromBody] DestinationRegisterDto createDto, [FromQuery] int adminId)
+        public async Task<IActionResult> Create([FromForm] string destinationJson, [FromForm] List<IFormFile> images, [FromQuery] int adminId)
         {
-            var response = await destinationBll.CreateAsync(createDto, adminId);
+            if (images is null || images.Count == 0)
+            {
+                return HandleApiResponse(CreateValidationApiResponse<int>("Debes enviar al menos una imagen."));
+            }
+
+            var fileDtos = new List<FileUploadDto>();
+            foreach (var img in images)
+            {
+                if (img.Length > 0)
+                {
+                    fileDtos.Add(new FileUploadDto
+                    {
+                        Content = img.OpenReadStream(),
+                        FileName = img.FileName,
+                        ContentType = img.ContentType
+                    });
+                }
+            }
+            var response = await destinationBll.RegisterUnifiedAsync(destinationJson, fileDtos, adminId);
             return HandleApiResponse(response);
         }
 
         [HttpPut("update")]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update([FromBody] DestinationUpdateDto updateDto, [FromQuery] int adminId)
+        public async Task<IActionResult> Update([FromForm] string destinationJson, [FromForm] List<IFormFile> images, [FromQuery] int adminId)
         {
-            var response = await destinationBll.UpdateAsync(updateDto, adminId);
+            if (images is null || images.Count == 0)
+            {
+                return HandleApiResponse(CreateValidationApiResponse<int>("Debes enviar al menos una imagen."));
+            }
+
+            var fileDtos = new List<FileUploadDto>();
+            foreach (var img in images)
+            {
+                if (img.Length > 0)
+                {
+                    fileDtos.Add(new FileUploadDto
+                    {
+                        Content = img.OpenReadStream(),
+                        FileName = img.FileName,
+                        ContentType = img.ContentType
+                    });
+                }
+            }
+            var response = await destinationBll.UpdateUnifiedAsync(destinationJson, fileDtos, adminId);
             return HandleApiResponse(response);
         }
 

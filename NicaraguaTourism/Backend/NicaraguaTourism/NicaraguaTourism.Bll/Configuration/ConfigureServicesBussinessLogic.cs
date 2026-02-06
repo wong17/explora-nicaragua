@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NicaraguaTourism.Bll.Files;
 using NicaraguaTourism.Bll.Hashing;
 using NicaraguaTourism.Bll.Implements;
 using NicaraguaTourism.Bll.Interfaces;
@@ -21,6 +22,8 @@ namespace NicaraguaTourism.Bll.Configuration
             services.AddSingleton<TourismMapper>();
             /* Agregar Argon2HashingServices */
             services.AddScoped<IPasswordHashingService, Argon2HashingService>();
+            /* Agregar servicio para subir imagenes a Azure */
+            services.AddScoped<IFileService, AzureBlobStorageService>();
         }
     }
 }

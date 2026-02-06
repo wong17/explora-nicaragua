@@ -10,5 +10,7 @@ namespace NicaraguaTourism.Bll.Interfaces
         Task<ApiResponse<IEnumerable<DestinationDto>>> GetAllAsync();
         Task<ApiResponse<DestinationDto>> GetByIdAsync(int id);
         Task<ApiResponse<bool>> UpdateAsync(DestinationUpdateDto updateDto, int modifiedBy);
+        Task<ApiResponse<int>> RegisterUnifiedAsync(string destinationJson, List<FileUploadDto> imageFiles, int adminId);
+        Task<ApiResponse<bool>> UpdateUnifiedAsync(string destinationJson, List<FileUploadDto> newImageFiles, int adminId);
     }
 }
