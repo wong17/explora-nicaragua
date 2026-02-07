@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
+    --primary-green: #16a34a;
+    --hover-green: #22c55e;
+    --accent-green: #4ade80;
+    --pure-white: #ffffff;
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
     --font-brand: 'Playfair Display', serif;
@@ -26,6 +30,7 @@ h6 {
     font-weight: 700;
 }
 
+/* Parrafos */
 p {
     text-wrap: pretty;
     user-select: none;
