@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import Lenis from 'lenis';
 import { register as registerSwiper } from 'swiper/element/bundle';
 import { Navbar } from "./components/navbar/navbar";
+import { Hero } from "./components/hero/hero";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar],
+  imports: [RouterOutlet, Navbar, Hero],
   templateUrl: './app.html',
   styleUrl: './app.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
