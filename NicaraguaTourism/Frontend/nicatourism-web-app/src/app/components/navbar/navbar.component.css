@@ -50,7 +50,7 @@
 
 /* Subrayado animado */
 .nav-link::after {
-    content: '';
+    content: '' !important;
     position: absolute;
     width: 0;
     height: 0.125rem;
@@ -59,6 +59,10 @@
     background-color: var(--accent-green);
     transition: width 0.3s ease, left 0.3s ease;
     box-shadow: 0 0 0.5rem var(--accent-green);
+
+    border: none !important;
+    margin: 0 !important;
+    transform: none !important;
 }
 
 .nav-link:hover::after,
