@@ -23,11 +23,15 @@
 .brand-text {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.02em;
+    font-weight: 700;
 }
 
 .brand-color {
-    color: var(--primary-green);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-green) 100%);
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
 }
 
 /* Links */
