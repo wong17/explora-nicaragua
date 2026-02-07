@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { ApiResponseCode, UiService, UserLoginDto, UserRegisterDto, UserService } from '../../core/core.index';
+import { ApiResponseCode, AuthService, ToasterService, UiService, UserLoginDto, UserRegisterDto, UserService } from '../../core/core.index';
 import { DialogModule } from 'primeng/dialog';
-import { ToasterService } from '../../core/services/toastr/toaster.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,6 +8,7 @@ import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DividerModule } from 'primeng/divider';
 import { HttpErrorResponse } from '@angular/common/http';
+import { switchMap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-auth-modal',
@@ -30,6 +30,7 @@ export class AuthModal {
   private fb = inject(FormBuilder);
   private toaster = inject(ToasterService);
   private userService = inject(UserService);
+  private authService = inject(AuthService);
 
   isLoginMode = signal(true);
 
@@ -70,30 +71,38 @@ export class AuthModal {
 
     const { fullName, email, password } = this.authForm.value;
 
+    // Login
     if (this.isLoginMode()) {
       const loginDto: UserLoginDto = {
         email: email!,
         password: password!
       };
 
-      this.userService.login(loginDto).subscribe({
-        next: (response) => {
-          if (response.isSuccess != ApiResponseCode.Success) {
-            this.toaster.error(response.message || 'Error al iniciar sesión');
-            return;
+      this.userService.login(loginDto).pipe(
+        switchMap(loginResponse => {
+          if (loginResponse.isSuccess == ApiResponseCode.Success && loginResponse.result) {
+            return this.userService.getById(loginResponse.result);
           } 
 
-          this.toaster.success('Has iniciado sesión correctamente', '¡Bienvenido!');
-          this.uiService.closeLoginModal();
+          return throwError(() => new Error(loginResponse.message));
+        })
+      ).subscribe({
+        next: (userResponse) => {
+          if (userResponse.isSuccess == ApiResponseCode.Success && userResponse.result) {
+            this.authService.setCurrentUser(userResponse.result);
+            this.toaster.success(`Bienvenid@, ${userResponse.result.fullName}`);
+            this.uiService.closeLoginModal();
+          }
         },
         error: (err: HttpErrorResponse) => {
-          this.toaster.error(err.error?.message || 'No se pudo conectar con el servidor', 'Error al iniciar sesión');
+          this.toaster.error(err.error.message || 'Error de credenciales', 'Error de Acceso');
         }
       });
 
       return;
     }
 
+    // Registro
     const registerDto: UserRegisterDto = {
       fullName: fullName!,
       email: email!,

@@ -1,11 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-brand: 'Playfair Display', serif;
+}
+
 * {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
     box-sizing: border-box;
 }
 
+/* Titulos */
 h1,
 h2,
 h3,
@@ -15,6 +21,9 @@ h6 {
     text-wrap: balance;
     user-select: none;
     color: white;
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+    font-weight: 700;
 }
 
 p {
@@ -26,4 +35,5 @@ p {
 body {
     min-height: 100vh;
     background: black;
+    font-family: var(--font-body);
 }

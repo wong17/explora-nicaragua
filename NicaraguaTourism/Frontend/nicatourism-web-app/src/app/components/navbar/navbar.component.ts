@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { UiService } from '../../core/core.index';
+import { AuthService, ToasterService, UiService } from '../../core/core.index';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +16,8 @@ export class Navbar {
   isMenuOpen = signal(false);
 
   private uiService = inject(UiService);
+  public authService = inject(AuthService);
+  private toaster = inject(ToasterService);
 
   private scrollSub?: Subscription;
 
@@ -40,6 +42,12 @@ export class Navbar {
   openLogin() {
     this.uiService.openLoginModal();
     this.closeMenu();
+  }
+
+  handleLogout() {
+    this.authService.logout();
+    this.toaster.success('Sesión cerrada exitosamente', 'Hasta pronto');
+    this.isMenuOpen.set(false);
   }
 
 }

@@ -10,3 +10,5 @@ export * from './services/destination.service';
 export * from './services/user.service';
 export * from './services/favorite.service';
 export * from './services/ui/ui.service';
+export * from './services/auth/auth.service';
+export * from './services/toastr/toaster.service';
