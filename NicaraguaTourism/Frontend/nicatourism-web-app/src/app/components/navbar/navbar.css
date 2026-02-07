@@ -1,0 +1,94 @@
+/* Variable local para el color de acento */
+:host {
+    --accent-color: #3bad3b;
+    --navbar-height: 5rem;
+    --navbar-scrolled-height: 4rem;
+}
+
+.text-accent {
+    color: var(--accent-color);
+}
+
+/* Navbar */
+.custom-navbar {
+    min-height: var(--navbar-height);
+    transition: all 0.4s ease-in-out;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    padding: 1rem 0;
+}
+
+/* Estado scrolled con el menu abierto --- */
+.custom-navbar.scrolled,
+.custom-navbar.mobile-open {
+    background-color: #000;
+    min-height: var(--navbar-scrolled-height);
+    padding: 0.5rem 0;
+    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5);
+}
+
+/* Brand */
+.brand-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.05rem;
+}
+
+/* Links */
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 500;
+    font-size: 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #fff !important;
+}
+
+/* Subrayado animado */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0.125rem;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Boton para acceder */
+.btn-login {
+    color: #fff;
+    border: 0.125rem solid #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-login:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Movil (Ajustes para cuando colapsa) */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: #000;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        border-top: 0.0625rem solid rgba(255, 255, 255, 0.1);
+        height: 100vh;
+    }
+}

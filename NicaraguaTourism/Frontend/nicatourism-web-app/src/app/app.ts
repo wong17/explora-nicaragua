@@ -2,10 +2,11 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, signal } from '@angular/core
 import { RouterOutlet } from '@angular/router';
 import Lenis from 'lenis';
 import { register as registerSwiper } from 'swiper/element/bundle';
+import { Navbar } from "./components/navbar/navbar";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
