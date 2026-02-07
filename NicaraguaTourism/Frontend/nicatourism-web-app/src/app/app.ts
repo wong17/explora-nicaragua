@@ -1,13 +1,15 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import Lenis from 'lenis';
 import { register as registerSwiper } from 'swiper/element/bundle';
-import { Navbar } from "./components/navbar/navbar";
-import { Hero } from "./components/hero/hero";
+import { Navbar } from "./components/navbar/navbar.component";
+import { Hero } from "./components/hero/hero.component";
+import { ToastModule } from 'primeng/toast';
+import { AuthModal } from './components/auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Hero],
+  imports: [RouterOutlet, Navbar, Hero, ToastModule, AuthModal],
   templateUrl: './app.html',
   styleUrl: './app.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

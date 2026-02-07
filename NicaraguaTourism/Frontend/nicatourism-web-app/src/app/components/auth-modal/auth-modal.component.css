@@ -1,0 +1,79 @@
+/* Ancho del modal */
+:host ::ng-deep .auth-modal-window {
+    width: 90vw;
+    max-width: 26rem;
+}
+
+/* Contenedor interno */
+.auth-container {
+    padding: 0.5rem;
+}
+
+.auth-subtitle {
+    color: var(--p-text-muted-color);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Formulario y Espaciado */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Inputs */
+.w-100 {
+    width: 100%;
+}
+
+/* Hack para que el componente p-password ocupe el 100% */
+:host ::ng-deep .w-100-password,
+:host ::ng-deep .w-100-password input {
+    width: 100%;
+}
+
+/* Mensajes de error */
+.text-error {
+    color: var(--p-red-400);
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+/* Botón Principal */
+:host ::ng-deep .submit-btn {
+    background-color: var(--accent-color, #3bad3b);
+    border-color: var(--accent-color, #3bad3b);
+    font-weight: 700;
+    padding: 0.75rem 0;
+}
+
+:host ::ng-deep .submit-btn:hover {
+    background-color: #2e8b2e !important;
+    border-color: #2e8b2e !important;
+}
+
+/* Link de cambio (Login <-> Registro) */
+.toggle-link {
+    color: var(--accent-color, #3bad3b);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.toggle-link:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.text-small {
+    font-size: 0.8rem;
+}

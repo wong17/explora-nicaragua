@@ -16,31 +16,31 @@ export class UserService {
 
   // POST: api/users/register
   register(registerDto: UserRegisterDto): Observable<ApiResponse<number>> {
-    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/register`, registerDto);
+    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/users/register`, registerDto);
   }
 
   // POST: api/users/login
   login(loginDto: UserLoginDto): Observable<ApiResponse<number>> {
-    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/login`, loginDto);
+    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/users/login`, loginDto);
   }
 
   // PUT: api/users/update
   update(updateDto: UserUpdateDto): Observable<ApiResponse<boolean>> {
-    return this.http.put<ApiResponse<boolean>>(`${this.apiUrl}/update`, updateDto);
+    return this.http.put<ApiResponse<boolean>>(`${this.apiUrl}/users/update`, updateDto);
   }
 
   // DELETE: api/users/delete/{id}
   delete(id: number): Observable<ApiResponse<boolean>> {
-    return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/users/delete/${id}`);
   }
 
   // GET: api/users/get_by_id/{id}
   getById(id: number): Observable<ApiResponse<UserDto>> {
-    return this.http.get<ApiResponse<UserDto>>(`${this.apiUrl}/get_by_id/${id}`);
+    return this.http.get<ApiResponse<UserDto>>(`${this.apiUrl}/users/get_by_id/${id}`);
   }
 
   // GET: api/users/get_all
   getAll(): Observable<ApiResponse<UserDto[]>> {
-    return this.http.get<ApiResponse<UserDto[]>>(`${this.apiUrl}/get_all`);
+    return this.http.get<ApiResponse<UserDto[]>>(`${this.apiUrl}/users/get_all`);
   }
 }

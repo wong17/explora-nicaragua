@@ -6,6 +6,7 @@ export * from './models/favorite.model';
 export * from './models/user.model';
 
 // Servicios
-export * from './services/destination.service.ts';
-export * from './services/user.service.ts';
-export * from './services/favorite.service.ts';
+export * from './services/destination.service';
+export * from './services/user.service';
+export * from './services/favorite.service';
+export * from './services/ui/ui.service';
