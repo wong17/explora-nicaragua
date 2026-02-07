@@ -40,7 +40,13 @@ export class HttpClient {
         };
 
         if (body) {
-            config.body = JSON.stringify(body);
+            if (body instanceof FormData) {
+                config.body = body;
+            } else {
+                // Si es un objeto normal, lo tratamos como JSON
+                config.headers['Content-Type'] = 'application/json';
+                config.body = JSON.stringify(body);
+            }
         }
 
         try {
@@ -52,8 +58,6 @@ export class HttpClient {
 
         } catch (error) {
             console.error(`Error HTTP (${method} ${url}):`, error);
-            // Si falla la red o el JSON está malformado, devolvemos un error genérico
-            // manteniendo la estructura de ApiResponse para no romper el frontend.
             return new ApiResponse({
                 isSuccess: ApiResponseCode.UnexpectedError,
                 message: 'No se pudo conectar con el servidor. Verifique su conexión.',
