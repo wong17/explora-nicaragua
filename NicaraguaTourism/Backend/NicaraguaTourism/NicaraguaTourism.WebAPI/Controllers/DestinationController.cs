@@ -3,7 +3,6 @@ using NicaraguaTourism.Bll.Interfaces;
 using NicaraguaTourism.Common.Runtime;
 using NicaraguaTourism.Entities.Dtos;
 using NicaraguaTourism.WebAPI.Controllers.Base;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace NicaraguaTourism.WebAPI.Controllers
 {
