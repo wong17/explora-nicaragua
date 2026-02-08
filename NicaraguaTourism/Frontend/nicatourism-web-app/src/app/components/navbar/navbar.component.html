@@ -59,6 +59,17 @@
                 </div>
               </li>
 
+              @if (authService.isAdmin()) {
+                <li>
+                  <a class="dropdown-item" routerLink="/admin/destinos">
+                    <i class="fa-solid fa-user-shield me-2"></i> Administración
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider bg-secondary opacity-25 my-1" />
+                </li>
+              }
+
               <li>
                 <a class="dropdown-item" routerLink="/favoritos">
                   <i class="fa-solid fa-heart text-danger me-2"></i> Mis Favoritos

@@ -8,6 +8,7 @@ export class AuthService {
   
   public currentUser = signal<UserDto | null>(null);
   public isLoggedIn = computed(() => this.currentUser() !== null);
+  public isAdmin = computed(() => this.currentUser()?.roleId === 1);
 
   constructor() {
     this.loadSession();
