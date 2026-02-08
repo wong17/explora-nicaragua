@@ -1,5 +1,8 @@
 <p-toast position="bottom-right" [baseZIndex]="100"></p-toast>
+
 <app-auth-modal></app-auth-modal>
-<app-navbar></app-navbar>
-<app-hero></app-hero>
+@if (!isAdminRoute) {
+  <app-navbar></app-navbar>
+  <app-hero></app-hero>
+}
 <router-outlet></router-outlet>

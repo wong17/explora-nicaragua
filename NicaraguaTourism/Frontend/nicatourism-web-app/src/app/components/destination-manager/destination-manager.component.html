@@ -1,0 +1,178 @@
+<p-confirmDialog [style]="{ width: '450px' }" styleClass="custom-confirm-dialog"></p-confirmDialog>
+
+<div class="admin-container fade-in">
+  <div class="admin-header d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <a
+        pButton
+        icon="pi pi-arrow-left"
+        label="Volver al Sitio"
+        class="p-button-text text-white"
+        routerLink="/"
+      ></a>
+
+      <div>
+        <h2 class="text-white fw-bold mb-1">Gestión de Destinos</h2>
+        <p class="text-secondary mb-0">Panel de Administración</p>
+      </div>
+    </div>
+
+    <button
+      pButton
+      label="Nuevo Destino"
+      icon="pi pi-plus"
+      class="custom-btn-primary"
+      routerLink="/admin/destinos/nuevo"
+    ></button>
+  </div>
+
+  <div class="table-container">
+    <p-table
+      #dt
+      [value]="destinations"
+      [rows]="10"
+      [paginator]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [globalFilterFields]="['name', 'location', 'accessDifficulty']"
+      [rowHover]="true"
+      dataKey="destinationId"
+      [loading]="loading"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} destinos"
+      [showCurrentPageReport]="true"
+      class="p-datatable-sm"
+    >
+      <ng-template pTemplate="caption">
+        <div class="d-flex align-items-center justify-content-between">
+          <span class="text-white fw-bold fs-5">Listado</span>
+          <p-iconField iconPosition="left">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar palabra clave..."
+              class="dark-search-input"
+            />
+          </p-iconField>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="col-index text-center text-secondary">#</th>
+
+          <th class="col-image">Imagen</th>
+
+          <th pSortableColumn="name" class="col-name">
+            <div class="d-flex align-items-center">
+              Nombre
+              <p-sortIcon field="name"></p-sortIcon>
+              <p-columnFilter
+                type="text"
+                field="name"
+                display="menu"
+                class="ms-auto"
+              ></p-columnFilter>
+            </div>
+          </th>
+
+          <th pSortableColumn="location" class="col-location">
+            <div class="d-flex align-items-center">
+              Ubicación
+              <p-sortIcon field="location"></p-sortIcon>
+              <p-columnFilter
+                type="text"
+                field="location"
+                display="menu"
+                class="ms-auto"
+              ></p-columnFilter>
+            </div>
+          </th>
+
+          <th pSortableColumn="accessDifficulty" class="col-difficulty">
+            <div class="d-flex align-items-center">
+              Dificultad
+              <p-sortIcon field="accessDifficulty"></p-sortIcon>
+              <p-columnFilter
+                type="text"
+                field="accessDifficulty"
+                display="menu"
+                class="ms-auto"
+              ></p-columnFilter>
+            </div>
+          </th>
+
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-dest let-i="rowIndex">
+        <tr>
+          <td class="text-center text-white-50 fw-bold">{{ i + 1 }}</td>
+
+          <td>
+            <div class="img-wrapper">
+              <img
+                [src]="dest.coverImage || 'assets/placeholder.jpg'"
+                [alt]="dest.name"
+                class="table-img"
+              />
+            </div>
+          </td>
+          <td class="fw-bold text-white">{{ dest.name }}</td>
+          <td class="text-secondary">{{ dest.location || 'N/A' }}</td>
+          <td>
+            <p-tag
+              [value]="dest.accessDifficulty || 'General'"
+              severity="info"
+              [rounded]="true"
+            ></p-tag>
+          </td>
+          <td>
+            <button
+              pButton
+              icon="pi pi-pencil"
+              class="action-btn-edit mr-2"
+              [routerLink]="['/admin/destinos/editar', dest.destinationId]"
+              pTooltip="Editar"
+              tooltipPosition="top"
+            ></button>
+
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="action-btn-delete"
+              (click)="deleteDestination(dest)"
+              pTooltip="Eliminar"
+              tooltipPosition="top"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr class="no-hover-row">
+          <td colspan="6" class="text-center py-5">
+            <div class="d-flex flex-column align-items-center justify-content-center opacity-75">
+              <div class="mb-3 p-3 rounded-circle bg-dark border border-secondary">
+                <i class="fa-solid fa-map-location-dot fs-1 text-secondary"></i>
+              </div>
+              <h5 class="text-white mb-1">No hay destinos registrados</h5>
+              <p class="text-secondary small mb-3">Comienza a llenar tu catálogo turístico.</p>
+
+              <button
+                pButton
+                label="Crea el primero ahora"
+                icon="pi pi-plus"
+                class="custom-btn-primary px-4 py-2"
+                routerLink="/admin/destinos/nuevo"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

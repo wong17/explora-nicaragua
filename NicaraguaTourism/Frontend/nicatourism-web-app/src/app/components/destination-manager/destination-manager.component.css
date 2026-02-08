@@ -1,0 +1,150 @@
+/* Layout Principal */
+.admin-container {
+    padding: 1rem 2rem;
+    min-height: 100vh;
+    background-color: #000;
+}
+
+.table-container {
+    background-color: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* Botones */
+:host ::ng-deep .custom-btn-primary {
+    background: var(--primary-green) !important;
+    border: none !important;
+    font-weight: 700;
+    color: white !important;
+}
+
+:host ::ng-deep .custom-btn-primary:hover {
+    background: var(--hover-green) !important;
+}
+
+/* Acciones en Tabla */
+.action-btn-edit {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #3b82f6 !important;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+}
+
+.action-btn-delete {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ef4444 !important;
+    /* Rojo danger */
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Tabla */
+:host ::ng-deep .p-datatable {
+    background: #18181b;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-header,
+:host ::ng-deep .p-datatable .p-datatable-thead>tr>th,
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td,
+:host ::ng-deep .p-datatable .p-datatable-footer {
+    background-color: #18181b !important;
+    color: #e4e4e7 !important;
+    border-color: #27272a !important;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr:hover>td {
+    background-color: #27272a !important;
+}
+
+/* Paginador Oscuro */
+:host ::ng-deep .p-paginator {
+    background-color: #18181b !important;
+    border-color: #27272a !important;
+    justify-content: flex-end !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page,
+:host ::ng-deep .p-paginator button {
+    color: #a1a1aa !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: var(--primary-green) !important;
+    color: white !important;
+}
+
+/* Columna para mostrar el numero de fila */
+.col-index {
+    width: 3rem;
+}
+
+/* Imagen en miniatura */
+.img-wrapper img {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Estilo para el input de búsqueda global */
+.dark-search-input {
+    background-color: #18181b !important;
+    color: white !important;
+    border: 1px solid #3f3f46 !important;
+    border-radius: 6px;
+    padding-left: 2.5rem;
+}
+
+.dark-search-input:focus {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 1px var(--primary-green);
+}
+
+/* Ajuste para los iconos de filtro en la cabecera */
+:host ::ng-deep .p-column-filter-menu-button {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+:host ::ng-deep .p-column-filter-menu-button:hover,
+:host ::ng-deep .p-column-filter-menu-button.p-column-filter-menu-button-open {
+    color: var(--primary-green);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Ancho mínimo de la tabla completa */
+:host ::ng-deep .p-datatable-table {
+    min-width: 75rem !important;
+}
+
+/* Ancho de columnas específicas */
+.col-image {
+    width: 10%;
+}
+
+.col-name,
+.col-location {
+    min-width: 14rem;
+}
+
+.col-difficulty {
+    min-width: 10rem;
+}
+
+/* Alineación de Acciones */
+.col-actions {
+    text-align: left;
+}
+
+/* Forzamos que el color de fondo se mantenga igual al pasar el mouse por la fila vacía */
+:host ::ng-deep .p-datatable-tbody>tr.no-hover-row:hover>td {
+    background-color: #18181b !important;
+    cursor: default;
+}
