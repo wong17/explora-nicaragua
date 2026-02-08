@@ -145,13 +145,19 @@
         <div class="row mb-4">
           <div class="col-6">
             <label class="form-label">Clima Promedio</label>
-            <input
-              type="text"
-              pInputText
+            <p-inputNumber
               [(ngModel)]="currentDestination.averageWeather"
-              class="full-width dark-input"
-              placeholder="Ej: 30°C Soleado"
-            />
+              mode="decimal"
+              suffix=" °C"
+              [min]="-20"
+              [max]="60"
+              [showButtons]="true"
+              buttonLayout="stacked"
+              placeholder="Ej: 32"
+              inputStyleClass="dark-input-number"
+              class="full-width"
+            >
+            </p-inputNumber>
           </div>
           <div class="col-6">
             <label class="form-label">Dificultad</label>

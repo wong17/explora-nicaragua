@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse, DestinationDto, DestinationRegisterDto, DestinationSummaryDto, DestinationUpdateDto } from '../core.index';
 import { environment } from '../../../environments/environment';
+import { PaginatedResult } from '../models/paginated-result';
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +32,12 @@ export class DestinationService {
     return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/destinations/delete/${id}`);
   }
 
-  // GET: api/destinations/get_all
-  getAll(): Observable<ApiResponse<DestinationSummaryDto[]>> {
-    return this.http.get<ApiResponse<DestinationSummaryDto[]>>(`${this.apiUrl}/destinations/get_all`);
+  // GET: api/destinations/get_paginated
+  getAll(page?: number, rows?: number): Observable<ApiResponse<PaginatedResult<DestinationSummaryDto>>> {
+    let params = new HttpParams()
+      .set('page', page ? page.toString() : '1')
+      .set('rows', rows ? rows.toString() : '50');
+    return this.http.get<ApiResponse<PaginatedResult<DestinationSummaryDto>>>(`${this.apiUrl}/destinations/get_paginated`, { params });
   }
 
   // GET: api/destinations/get_by_id/{id}

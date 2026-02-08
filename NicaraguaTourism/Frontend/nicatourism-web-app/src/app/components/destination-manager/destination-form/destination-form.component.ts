@@ -34,7 +34,7 @@ interface DestinationFormTemplate {
   location: string;
   latitude: number | null;
   longitude: number | null;
-  averageWeather: string;
+  averageWeather: number | null;
   accessDifficulty: 'Fácil' | 'Moderado' | 'Difícil' | 'Extremo' | '';
   activities: ActivityInsertDto[];
 }
@@ -84,7 +84,6 @@ export class DestinationForm implements OnInit, OnDestroy {
   readonly MIN_ZOOM = 7;  // Para ver todo el país
   readonly MAX_ZOOM = 18; // Zoom callejero
   readonly DEFAULT_ZOOM = 8;
-  private isMapClickUpdating = false;
 
   isEditMode = false;
   isLoading = false;
@@ -132,7 +131,7 @@ export class DestinationForm implements OnInit, OnDestroy {
       location: '',
       latitude: null,
       longitude: null,
-      averageWeather: '',
+      averageWeather: null,
       accessDifficulty: '',
       activities: []
     };
@@ -143,21 +142,21 @@ export class DestinationForm implements OnInit, OnDestroy {
     this.destinationService.getById(id).subscribe({
       next: (resp) => {
         if (resp.isSuccess === ApiResponseCode.Success && resp.result) {
-          const d = resp.result;
-
+          const dto = resp.result;
+          
           // Mapeamos la respuesta al formulario
           this.currentDestination = {
-            destinationId: d.destinationId,
-            name: d.name,
-            shortDescription: d.shortDescription,
-            longDescription: d.longDescription || '',
-            location: d.location || '',
-            latitude: d.latitude || null,
-            longitude: d.longitude || null,
-            averageWeather: d.averageWeather || '',
+            destinationId: dto.destinationId,
+            name: dto.name,
+            shortDescription: dto.shortDescription,
+            longDescription: dto.longDescription || '',
+            location: dto.location || '',
+            latitude: dto.latitude || null,
+            longitude: dto.longitude || null,
+            averageWeather: dto.averageWeather ? parseFloat(dto.averageWeather) : null,
             // Casteo seguro para el select
-            accessDifficulty: (d.accessDifficulty as DestinationFormTemplate['accessDifficulty']) || '',
-            activities: d.activities ? [...d.activities] : []
+            accessDifficulty: (dto.accessDifficulty as DestinationFormTemplate['accessDifficulty']) || '',
+            activities: dto.activities ? [...dto.activities] : []
           };
 
           // Una vez cargados los datos, iniciamos el mapa en esa posición
@@ -301,7 +300,7 @@ export class DestinationForm implements OnInit, OnDestroy {
       location: this.currentDestination.location || null,
       latitude: this.currentDestination.latitude,
       longitude: this.currentDestination.longitude,
-      averageWeather: this.currentDestination.averageWeather || null,
+      averageWeather: this.currentDestination.averageWeather ? this.currentDestination.averageWeather.toString() : null,
       accessDifficulty: this.currentDestination.accessDifficulty || null,
       activities: this.currentDestination.activities,
       images: [] // Las imágenes van por separado en el servicio

@@ -109,15 +109,55 @@
 }
 
 /* Botón Custom */
+/* Estado Base: Color + Estructura Flexbox */
 :host ::ng-deep .custom-btn-primary {
+    /* Estilo Visual */
     background: var(--primary-green) !important;
     border: none !important;
-    font-weight: 600;
     color: #ffffff !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
 }
 
+/* Estado Hover */
 :host ::ng-deep .custom-btn-primary:hover {
     background: var(--hover-green) !important;
+    cursor: pointer;
+}
+
+/* Estado Loading (Cargando) */
+:host ::ng-deep .custom-btn-primary.p-button-loading {
+    background: var(--primary-green) !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+    cursor: wait !important;
+}
+
+/* Icono de Carga (Spinner) */
+:host ::ng-deep .custom-btn-primary .p-button-loading-icon {
+    color: #ffffff !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Icono Normal (Check) */
+:host ::ng-deep .custom-btn-primary .p-button-icon {
+    color: #ffffff !important;
+    margin: 0 !important;
+}
+
+/* Texto del Botón */
+:host ::ng-deep .custom-btn-primary .p-button-label {
+    color: #ffffff !important;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: 700 !important;
 }
 
 /* Tags */

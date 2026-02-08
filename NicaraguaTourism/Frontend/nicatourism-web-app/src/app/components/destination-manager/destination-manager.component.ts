@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { 
@@ -41,25 +41,25 @@ export class DestinationManager implements OnInit {
   private toasterService = inject(ToasterService);
   private confirmationService = inject(ConfirmationService);
 
-  destinations: DestinationSummaryDto[] = [];
-  loading: boolean = true;
+  destinations = signal<DestinationSummaryDto[]>([]);
+  loading = signal<boolean>(true);
 
   ngOnInit(): void {
     this.loadDestinations();
   }
 
   loadDestinations() {
-    this.loading = true;
+    this.loading.set(true);
     this.destinationService.getAll().subscribe({
       next: (response) => {
         if (response.isSuccess === ApiResponseCode.Success && response.result) {
-          this.destinations = response.result;
+          this.destinations.set(response.result.data);
         }
-        this.loading = false;
+        this.loading.set(false);
       },
       error: (err) => {
         this.toasterService.error(err.error?.message ?? 'Error al cargar destinos')
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }
