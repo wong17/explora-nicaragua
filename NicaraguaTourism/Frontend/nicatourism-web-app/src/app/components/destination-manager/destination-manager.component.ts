@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { 
-  ApiResponseCode, 
-  DestinationService, 
-  DestinationSummaryDto, 
-  ToasterService 
+import {
+  ApiResponseCode,
+  DestinationService,
+  DestinationSummaryDto,
+  ToasterService
 } from '../../core/core.index';
 import { ConfirmationService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -36,7 +36,7 @@ import { InputTextModule } from 'primeng/inputtext';
   styleUrl: './destination-manager.component.css',
 })
 export class DestinationManager implements OnInit {
-  
+
   private destinationService = inject(DestinationService);
   private toasterService = inject(ToasterService);
   private confirmationService = inject(ConfirmationService);
@@ -85,5 +85,15 @@ export class DestinationManager implements OnInit {
         });
       }
     });
+  }
+
+  getDifficultySeverity(difficulty: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | undefined {
+    switch (difficulty) {
+      case 'Fácil': return 'success';
+      case 'Moderado': return 'info';
+      case 'Difícil': return 'warn';
+      case 'Extremo': return 'danger';
+      default: return 'secondary';
+    }
   }
 }

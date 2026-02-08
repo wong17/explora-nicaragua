@@ -39,11 +39,11 @@
       [loading]="loading()"
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} destinos"
       [showCurrentPageReport]="true"
-      class="p-datatable-sm"
+      class="p-datatable-sm vertical-align-middle"
     >
       <ng-template pTemplate="caption">
         <div class="d-flex align-items-center justify-content-between">
-          <span class="text-white fw-bold fs-5">Listado</span>
+          <span class="text-white fw-bold fs-5">Listado de Destinos</span>
           <p-iconField iconPosition="left">
             <p-inputIcon>
               <i class="pi pi-search"></i>
@@ -52,7 +52,7 @@
               pInputText
               type="text"
               (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-              placeholder="Buscar palabra clave..."
+              placeholder="Buscar..."
               class="dark-search-input"
             />
           </p-iconField>
@@ -61,9 +61,9 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th class="col-index text-center text-secondary">#</th>
-
-          <th class="col-image">Imagen</th>
+          <th class="col-image text-center">
+            <i class="pi pi-image"></i>
+          </th>
 
           <th pSortableColumn="name" class="col-name">
             <div class="d-flex align-items-center">
@@ -74,19 +74,34 @@
                 field="name"
                 display="menu"
                 class="ms-auto"
+                placeholder="Filtrar por nombre"
               ></p-columnFilter>
             </div>
           </th>
 
           <th pSortableColumn="location" class="col-location">
             <div class="d-flex align-items-center">
-              Ubicación
+              Ubicación & Coordenadas
               <p-sortIcon field="location"></p-sortIcon>
               <p-columnFilter
                 type="text"
                 field="location"
                 display="menu"
                 class="ms-auto"
+                placeholder="Filtrar por ubicación"
+              ></p-columnFilter>
+            </div>
+          </th>
+
+          <th class="col-activities">
+            <div class="d-flex align-items-center">
+              Actividades
+              <p-columnFilter
+                type="text"
+                field="activities"
+                display="menu"
+                class="ms-auto"
+                placeholder="Buscar actividad"
               ></p-columnFilter>
             </div>
           </th>
@@ -100,36 +115,82 @@
                 field="accessDifficulty"
                 display="menu"
                 class="ms-auto"
+                placeholder="Filtrar dificultad"
               ></p-columnFilter>
             </div>
           </th>
 
-          <th>Acciones</th>
+          <th class="col-actions">Acciones</th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-dest let-i="rowIndex">
+      <ng-template pTemplate="body" let-dest>
         <tr>
-          <td class="text-center text-white-50 fw-bold">{{ i + 1 }}</td>
-
-          <td>
-            <div class="img-wrapper">
+          <td class="text-center">
+            <div class="img-wrapper shadow-sm">
               <img
-                [src]="dest.images[0]"
+                [src]="
+                  dest.images && dest.images.length > 0
+                    ? dest.images[0].imageUrl
+                    : 'assets/placeholder.jpg'
+                "
                 [alt]="dest.name"
                 class="table-img"
               />
+              @if (dest.images && dest.images.length > 1) {
+                <span class="badge-count">+{{ dest.images.length - 1 }}</span>
+              }
             </div>
           </td>
-          <td class="fw-bold text-white">{{ dest.name }}</td>
-          <td class="text-secondary">{{ dest.location || 'N/A' }}</td>
+
+          <td>
+            <span class="fw-bold text-white d-block fs-6">{{ dest.name }}</span>
+            @if (dest.averageWeather) {
+              <small class="text-secondary">
+                <i class="fa-solid fa-temperature-half me-1"></i>{{ dest.averageWeather }}
+              </small>
+            }
+          </td>
+
+          <td>
+            <div class="d-flex flex-column">
+              <span class="text-light fw-medium mb-1">
+                <i class="pi pi-map-marker text-primary me-1"></i>
+                {{ dest.location || 'Sin ubicación' }}
+              </span>
+              <div class="coord-badge">
+                <small>Lat: {{ dest.latitude | number: '1.4-4' }}</small>
+                <span class="mx-1">|</span>
+                <small>Lng: {{ dest.longitude | number: '1.4-4' }}</small>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <div class="d-flex flex-wrap gap-1">
+              @for (act of dest.activities; track $index) {
+                <p-tag
+                  [value]="act.activityName"
+                  severity="info"
+                  styleClass="dark-tag-sm"
+                  [rounded]="true"
+                ></p-tag>
+              }
+              @if (!dest.activities || dest.activities.length === 0) {
+                <span class="text-secondary small fst-italic">Sin actividades</span>
+              }
+            </div>
+          </td>
+
           <td>
             <p-tag
-              [value]="dest.accessDifficulty || 'General'"
-              severity="info"
+              [value]="dest.accessDifficulty || 'N/A'"
+              [severity]="getDifficultySeverity(dest.accessDifficulty)"
               [rounded]="true"
+              class="fw-bold"
             ></p-tag>
           </td>
+
           <td>
             <button
               pButton
@@ -137,7 +198,7 @@
               class="action-btn-edit mr-2"
               [routerLink]="['/admin/destinos/editar', dest.destinationId]"
               pTooltip="Editar"
-              tooltipPosition="top"
+              tooltipPosition="left"
             ></button>
 
             <button
@@ -146,7 +207,7 @@
               class="action-btn-delete"
               (click)="deleteDestination(dest)"
               pTooltip="Eliminar"
-              tooltipPosition="top"
+              tooltipPosition="left"
             ></button>
           </td>
         </tr>
