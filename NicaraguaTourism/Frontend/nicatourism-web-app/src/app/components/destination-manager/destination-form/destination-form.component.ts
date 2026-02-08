@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -71,12 +71,20 @@ export class DestinationForm implements OnInit, OnDestroy {
   private toasterService = inject(ToasterService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
-  readonly DEFAULT_LAT = 12.865416;
-  readonly DEFAULT_LNG = -85.207229;
-  readonly DEFAULT_ZOOM = 7.5;
-  readonly DEFAULT_MAX_ZOOM = 19;
-  readonly DETAIL_ZOOM = 13;
+  readonly MANAGUA_LAT = 12.136389;
+  readonly MANAGUA_LNG = -86.251389;
+  // Límites de Nicaragua (Aproximados para bloquear la vista)
+  readonly NICA_BOUNDS = L.latLngBounds(
+    L.latLng(10.5, -88.0), // Sur-Oeste
+    L.latLng(15.2, -82.5)  // Norte-Este
+  );
+  readonly MIN_ZOOM = 7;  // Para ver todo el país
+  readonly MAX_ZOOM = 18; // Zoom callejero
+  readonly DEFAULT_ZOOM = 8;
+  private isMapClickUpdating = false;
 
   isEditMode = false;
   isLoading = false;
@@ -174,39 +182,79 @@ export class DestinationForm implements OnInit, OnDestroy {
     }
 
     // Coordenadas por defecto
-    const lat = this.currentDestination.latitude || this.DEFAULT_LAT;
-    const lng = this.currentDestination.longitude || this.DEFAULT_LNG;
-    const zoom = this.currentDestination.latitude ? this.DETAIL_ZOOM : this.DEFAULT_ZOOM;
+    const lat = this.currentDestination.latitude || this.MANAGUA_LAT;
+    const lng = this.currentDestination.longitude || this.MANAGUA_LNG;
+    // Si estamos editando y ya tiene coords, hacemos zoom detalle, sino zoom país
+    const initialZoom = (this.currentDestination.latitude) ? 15 : this.DEFAULT_ZOOM;
 
-    // 'map-full' será el ID del div en el HTML
-    this.map = L.map('map-full', { center: [lat, lng], zoom: zoom });
+    // 'map-full' es el ID del div en el HTML
+    this.map = L.map('map-full', {
+      center: [lat, lng],
+      zoom: initialZoom,
+      minZoom: this.MIN_ZOOM,
+      maxZoom: this.MAX_ZOOM,
+      maxBounds: this.NICA_BOUNDS,
+      maxBoundsViscosity: 1.0
+    });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: this.DEFAULT_MAX_ZOOM,
       attribution: '© OpenStreetMap'
     }).addTo(this.map);
 
-    // Si ya tenemos coordenadas, ponemos el marcador
-    if (this.currentDestination.latitude && this.currentDestination.longitude) {
-      this.addMarker(this.currentDestination.latitude, this.currentDestination.longitude);
+    // Colocamos el marcador inicial
+    this.setMarker(lat, lng);
+
+    // Si es nuevo, actualizamos el modelo con las coords de Managua por defecto
+    if (!this.currentDestination.latitude) {
+      this.ngZone.run(() => {
+        this.currentDestination.latitude = lat;
+        this.currentDestination.longitude = lng;
+        this.cdr.detectChanges();
+      });
     }
 
     // Evento Click: Mover el marcador y actualizar inputs
     this.map.on('click', (e: L.LeafletMouseEvent) => {
-      const { lat, lng } = e.latlng;
-      // Actualizamos modelo
-      this.currentDestination.latitude = parseFloat(lat.toFixed(6));
-      this.currentDestination.longitude = parseFloat(lng.toFixed(6));
-      // Actualizamos visual
-      this.addMarker(lat, lng);
+      // Usamos ngZone.run para reingresar a la zona de Angular
+      this.ngZone.run(() => {
+        const { lat, lng } = e.latlng;
+        this.currentDestination.latitude = parseFloat(lat.toFixed(6));
+        this.currentDestination.longitude = parseFloat(lng.toFixed(6));
+
+        this.setMarker(lat, lng);
+        this.cdr.detectChanges();
+      });
     });
   }
 
-  private addMarker(lat: number, lng: number) {
+  private setMarker(lat: number, lng: number) {
     if (this.marker) {
       this.marker.setLatLng([lat, lng]);
     } else {
-      this.marker = L.marker([lat, lng]).addTo(this.map!);
+      this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map!); // Hacemos el marcador arrastrable
+
+      // Evento: Si el usuario arrastra el marcador, actualizamos inputs
+      this.marker.on('dragend', (event) => {
+        // Al soltar el marcador, actualizamos los inputs DENTRO de la zona
+        this.ngZone.run(() => {
+          const position = event.target.getLatLng();
+          this.currentDestination.latitude = parseFloat(position.lat.toFixed(6));
+          this.currentDestination.longitude = parseFloat(position.lng.toFixed(6));
+          this.cdr.detectChanges();
+        });
+      });
+    }
+  }
+
+  updateMapFromInput() {
+    const lat = this.currentDestination.latitude;
+    const lng = this.currentDestination.longitude;
+
+    if (lat && lng && this.map && this.marker) {
+      // Movemos el marcador
+      this.marker.setLatLng([lat, lng]);
+      // Centramos el mapa suavemente en la nueva posición
+      this.map.panTo([lat, lng]);
     }
   }
 
