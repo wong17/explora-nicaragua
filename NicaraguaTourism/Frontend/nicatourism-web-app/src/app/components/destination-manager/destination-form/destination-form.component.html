@@ -1,1 +1,271 @@
-<p>destination-form works!</p>
+<div class="form-container fade-in">
+  <div class="form-header">
+    <div>
+      <h2 class="text-white fw-bold mb-1">
+        {{ isEditMode ? 'Editar Destino' : 'Nuevo Destino' }}
+      </h2>
+      <p class="text-secondary mb-0">Completa la información del lugar turístico.</p>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        class="p-button-outlined p-button-secondary text-white"
+        routerLink="/admin/destinos"
+      ></button>
+
+      <button
+        pButton
+        label="Guardar Destino"
+        icon="pi pi-check"
+        class="custom-btn-primary"
+        [loading]="isLoading"
+        (click)="save()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="left-panel d-flex flex-column">
+      <div class="card-dark h-100 d-flex flex-column">
+        <h4 class="card-title">
+          <i class="fa-solid fa-map-location-dot me-2"></i>Ubicación y Datos
+        </h4>
+
+        <div class="field mb-4">
+          <label class="form-label">Nombre del Destino <span class="required">*</span></label>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="currentDestination.name"
+            class="full-width dark-input"
+            placeholder="Ej: Volcán Cerro Negro"
+          />
+          @if (submitted && !currentDestination.name) {
+            <small class="error-msg">El nombre es obligatorio.</small>
+          }
+        </div>
+
+        <div class="field mb-4">
+          <label class="form-label">Ubicación (Texto)</label>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="currentDestination.location"
+            class="full-width dark-input"
+            placeholder="Ej: León, Nicaragua"
+          />
+        </div>
+
+        <div class="d-flex flex-column flex-grow-1 mb-3">
+          <label class="form-label">Mapa Interactivo</label>
+          <div id="map-full" class="map-container-full"></div>
+          <small class="text-warning mt-2">
+            <i class="pi pi-info-circle me-1"></i>Haz clic en el mapa para capturar las coordenadas
+            automáticamente.
+          </small>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label class="form-label">Latitud</label>
+            <p-inputNumber
+              [(ngModel)]="currentDestination.latitude"
+              mode="decimal"
+              [minFractionDigits]="6"
+              [maxFractionDigits]="8"
+              class="full-width input-number-dark"
+            >
+            </p-inputNumber>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Longitud</label>
+            <p-inputNumber
+              [(ngModel)]="currentDestination.longitude"
+              mode="decimal"
+              [minFractionDigits]="6"
+              [maxFractionDigits]="8"
+              class="full-width input-number-dark"
+            >
+            </p-inputNumber>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="card-dark">
+        <h4 class="card-title">
+          <i class="fa-solid fa-circle-info me-2"></i>Detalles y Multimedia
+        </h4>
+
+        <div class="field mb-4">
+          <label class="form-label"
+            >Descripción Corta (Resumen) <span class="required">*</span></label
+          >
+          <textarea
+            pTextarea
+            [(ngModel)]="currentDestination.shortDescription"
+            rows="3"
+            class="full-width dark-input"
+            placeholder="Breve introducción para la tarjeta..."
+          >
+          </textarea>
+          @if (submitted && !currentDestination.shortDescription) {
+            <small class="error-msg">La descripción corta es obligatoria.</small>
+          }
+        </div>
+
+        <div class="field mb-4">
+          <label class="form-label">Descripción Detallada</label>
+          <textarea
+            pTextarea
+            [(ngModel)]="currentDestination.longDescription"
+            rows="8"
+            class="full-width dark-input"
+            placeholder="Historia completa, consejos, detalles..."
+          >
+          </textarea>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-6">
+            <label class="form-label">Clima Promedio</label>
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="currentDestination.averageWeather"
+              class="full-width dark-input"
+              placeholder="Ej: 30°C Soleado"
+            />
+          </div>
+          <div class="col-6">
+            <label class="form-label">Dificultad</label>
+            <p-select
+              [options]="difficultyOptions"
+              [(ngModel)]="currentDestination.accessDifficulty"
+              placeholder="Seleccionar"
+              class="full-width dark-select"
+              appendTo="body"
+            >
+            </p-select>
+          </div>
+        </div>
+
+        <div class="field mb-4">
+          <label class="form-label">Actividades Disponibles</label>
+          <div class="d-flex gap-2 mb-3">
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="tempActivity"
+              class="flex-grow-1 dark-input"
+              (keydown.enter)="addActivity()"
+              placeholder="Escribe una actividad y presiona Enter..."
+            />
+            <button
+              pButton
+              icon="pi pi-plus"
+              class="p-button-success"
+              (click)="addActivity()"
+            ></button>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            @for (act of currentDestination.activities; track $index) {
+              <p-tag [value]="act.activityName" severity="success" [rounded]="true">
+                <span
+                  class="ms-2 cursor-pointer remove-icon"
+                  (click)="removeActivity($index)"
+                  title="Quitar"
+                  >&times;</span
+                >
+              </p-tag>
+            }
+            @if (currentDestination.activities.length === 0) {
+              <small class="text-secondary fst-italic">No hay actividades añadidas.</small>
+            }
+          </div>
+        </div>
+
+        <div class="field d-flex flex-column flex-grow-1">
+          <label class="form-label">Galería de Imágenes</label>
+          <p-fileUpload
+            #fileUpload
+            mode="advanced"
+            name="images[]"
+            [multiple]="true"
+            accept="image/*"
+            [maxFileSize]="5000000"
+            [showUploadButton]="false"
+            [showCancelButton]="false"
+            chooseLabel="Seleccionar Fotos"
+            (onSelect)="onFileSelect($event)"
+            class="custom-dropzone"
+          >
+            <ng-template pTemplate="header"></ng-template>
+
+            <ng-template pTemplate="content">
+              @if (selectedFiles.length === 0) {
+                <div class="upload-placeholder cursor-pointer" (click)="fileUpload.choose()">
+                  <div class="text-center">
+                    <i class="pi pi-cloud-upload text-white" style="font-size: 3rem"></i>
+                    <h5 class="text-white mt-3 fw-bold">Arrastra y suelta tus fotos aquí</h5>
+                    <p class="text-secondary mb-0">o haz clic para explorar tus archivos</p>
+                  </div>
+                </div>
+              }
+
+              @if (selectedFiles.length > 0) {
+                <div class="files-preview-container">
+                  <ul class="list-unstyled mb-0">
+                    @for (file of selectedFiles; track file.name; let i = $index) {
+                      <li
+                        class="file-item d-flex align-items-center justify-content-between p-2 mb-2 rounded"
+                      >
+                        <div class="d-flex align-items-center">
+                          <i class="pi pi-image text-white me-3"></i>
+                          <div class="d-flex flex-column">
+                            <span class="text-white fw-bold">{{ file.name }}</span>
+                            <span class="text-secondary small">
+                              {{ file.size / 1024 / 1024 | number: '1.2-2' }} MB
+                            </span>
+                          </div>
+                          @if (i === 0) {
+                            <p-tag
+                              value="Portada"
+                              severity="warn"
+                              class="ms-3"
+                              [rounded]="true"
+                            ></p-tag>
+                          }
+                        </div>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </ng-template>
+          </p-fileUpload>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-warning">
+              <i class="pi pi-info-circle me-1"></i>Nota: La primera imagen subida se usará como
+              portada.
+            </small>
+
+            <button
+              pButton
+              label="Seleccionar Fotos"
+              icon="pi pi-plus"
+              class="btn-upload-external"
+              (click)="fileUpload.choose()"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

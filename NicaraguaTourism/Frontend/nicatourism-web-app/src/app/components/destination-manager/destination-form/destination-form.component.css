@@ -1,0 +1,209 @@
+/* Layout General */
+.form-container {
+    height: 100vh;
+    width: 100vw;
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Cabecera */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Grid System (2 Columnas) */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 1rem;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+/* En móviles, se hace una sola columna */
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container-full {
+        height: 400px !important;
+        flex-grow: 0 !important;
+    }
+}
+
+/* Tarjetas Oscuras */
+.card-dark {
+    background-color: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.card-title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Inputs & Labels */
+.form-label {
+    display: block;
+    color: #e4e4e7;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.dark-input,
+:host ::ng-deep .dark-select .p-select-label {
+    background-color: #27272a !important;
+    color: white !important;
+    border: 1px solid #3f3f46 !important;
+    border-radius: 6px;
+}
+
+.dark-input:focus {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 1px var(--primary-green);
+}
+
+.error-msg {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Mapa Leaflet */
+.map-container-full {
+    flex-grow: 1;
+    min-height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #3f3f46;
+    z-index: 1;
+}
+
+/* Botón Custom */
+:host ::ng-deep .custom-btn-primary {
+    background: var(--primary-green) !important;
+    border: none !important;
+    font-weight: 600;
+    color: #ffffff !important;
+}
+
+:host ::ng-deep .custom-btn-primary:hover {
+    background: var(--hover-green) !important;
+}
+
+/* Tags */
+.remove-icon:hover {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Dropdown (p-select) */
+:host ::ng-deep .dark-select .p-select-label {
+    background-color: #27272a !important;
+    border: 1px solid #3f3f46 !important;
+    color: #ffffff !important;
+}
+
+:host ::ng-deep .dark-select .p-select-label.p-placeholder,
+:host ::ng-deep .dark-select .p-select-dropdown-icon {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Contenedor principal del componente PrimeNG */
+:host ::ng-deep .custom-dropzone {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+}
+
+/* El área "dashed" donde se sueltan los archivos */
+:host ::ng-deep .custom-dropzone .p-fileupload-content {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 2px dashed #3f3f46 !important;
+    border-radius: 8px;
+    padding: 0 !important;
+    flex-grow: 1;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+/* Efecto Hover al arrastrar */
+:host ::ng-deep .custom-dropzone .p-fileupload-content:hover {
+    border-color: var(--primary-green) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* El Placeholder (Lo que se ve cuando está vacío) */
+.upload-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    cursor: pointer;
+    min-height: 200px;
+}
+
+/* Lista de Archivos (Cuando ya seleccionaste) */
+.files-preview-container {
+    padding: 1rem;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.file-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Boton para subir las fotos --- */
+.btn-upload-external {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-upload-external:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: white !important;
+}
+
+/* Limpieza de la barra de botones interna de PrimeNG (por si acaso) */
+:host ::ng-deep .custom-dropzone .p-fileupload-buttonbar {
+    display: none !important;
+}
