@@ -17,28 +17,28 @@ export class DestinationService {
   // POST: api/destinations/register?adminId=X
   create(destinationData: DestinationRegisterDto, imageFiles: File[], adminId: number): Observable<ApiResponse<number>> {
     const formData = this.createFormData(destinationData, imageFiles);
-    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/register?adminId=${adminId}`, formData);
+    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/destinations/register?adminId=${adminId}`, formData);
   }
 
   // PUT: api/destinations/update?adminId=X
   update(destinationData: DestinationUpdateDto, imageFiles: File[], adminId: number): Observable<ApiResponse<boolean>> {
     const formData = this.createFormData(destinationData, imageFiles);
-    return this.http.put<ApiResponse<boolean>>(`${this.apiUrl}/update?adminId=${adminId}`, formData);
+    return this.http.put<ApiResponse<boolean>>(`${this.apiUrl}/destinations/update?adminId=${adminId}`, formData);
   }
 
   // DELETE: api/destinations/delete/{id}
   delete(id: number): Observable<ApiResponse<boolean>> {
-    return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<ApiResponse<boolean>>(`${this.apiUrl}/destinations/delete/${id}`);
   }
 
   // GET: api/destinations/get_all
   getAll(): Observable<ApiResponse<DestinationSummaryDto[]>> {
-    return this.http.get<ApiResponse<DestinationSummaryDto[]>>(`${this.apiUrl}/get_all`);
+    return this.http.get<ApiResponse<DestinationSummaryDto[]>>(`${this.apiUrl}/destinations/get_all`);
   }
 
   // GET: api/destinations/get_by_id/{id}
   getById(id: number): Observable<ApiResponse<DestinationDto>> {
-    return this.http.get<ApiResponse<DestinationDto>>(`${this.apiUrl}/get_by_id/${id}`);
+    return this.http.get<ApiResponse<DestinationDto>>(`${this.apiUrl}/destinations/get_by_id/${id}`);
   }
 
   // Para construir el FormData
