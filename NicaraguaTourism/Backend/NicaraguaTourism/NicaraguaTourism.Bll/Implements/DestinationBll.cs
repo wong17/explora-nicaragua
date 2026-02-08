@@ -22,7 +22,7 @@ namespace NicaraguaTourism.Bll.Implements
                 return CreateValidationApiResponse<int>("El nombre y la descripción corta son obligatorios.");
             }
 
-            if (createdBy <= 0) 
+            if (createdBy <= 0)
             {
                 return CreateValidationApiResponse<int>("El usuario no es válido");
             }
@@ -80,12 +80,6 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<IEnumerable<DestinationDto>>> GetAllAsync()
-        {
-            var dalResponse = await repository.GetAll();
-            return MapApiResponse(dalResponse, result => result);
-        }
-
         public async Task<ApiResponse<DestinationDto>> GetByIdAsync(int id)
         {
             if (id <= 0)
@@ -95,6 +89,17 @@ namespace NicaraguaTourism.Bll.Implements
 
             var dalResponse = await repository.GetById(id);
             return MapApiResponse(dalResponse, result => result);
+        }
+
+        public async Task<ApiResponse<PaginatedResult<DestinationDto>>> GetPaginatedAsync(int? page, int? rows)
+        {
+            if (page.HasValue && page <= 0)
+                return CreateValidationApiResponse<PaginatedResult<DestinationDto>>("El número de página no es válido.");
+
+            if (rows.HasValue && rows <= 0)
+                return CreateValidationApiResponse<PaginatedResult<DestinationDto>>("El número de filas no es válido.");
+
+            return await repository.GetPaginated(page ?? 1, rows ?? 50);
         }
 
         /// <summary>

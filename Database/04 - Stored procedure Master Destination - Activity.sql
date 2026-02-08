@@ -219,13 +219,15 @@ GO
 
 -- Obtener destinos turísticos
 CREATE OR ALTER PROCEDURE uspGetDestinations (
-    @DestinationId INT = NULL
+    @DestinationId INT = NULL,
+    @PageNumber INT = NULL,
+    @PageSize INT = NULL
 )
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- 
+    --
     IF @DestinationId IS NOT NULL
     BEGIN
         SELECT 
@@ -239,6 +241,7 @@ BEGIN
             d.AverageWeather,
             d.AccessDifficulty,
             
+            -- Imágenes
             JSON_QUERY((
                 SELECT ImageUrl, IsCover, AltText
                 FROM DestinationImage di
@@ -246,6 +249,7 @@ BEGIN
                 FOR JSON PATH
             )) AS Images,
 
+            -- Actividades
             JSON_QUERY((
                 SELECT ActivityName, IconName
                 FROM Activity a
@@ -257,37 +261,54 @@ BEGIN
         WHERE d.DestinationId = @DestinationId
         FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER;
     END
+
     -- 
     ELSE
     BEGIN
-        SELECT 
-            d.DestinationId,
-            d.[Name],
-            d.ShortDescription,
-            d.LongDescription,
-            d.[Location],
-            d.Latitude,
-            d.Longitude,
-            d.AverageWeather,
-            d.AccessDifficulty,
-            
-            JSON_QUERY((
-                SELECT ImageUrl, IsCover, AltText
-                FROM DestinationImage di
-                WHERE di.DestinationId = d.DestinationId
-                FOR JSON PATH
-            )) AS Images,
+        DECLARE @Offset INT, @TotalRecords INT;
 
-            JSON_QUERY((
-                SELECT ActivityName, IconName
-                FROM Activity a
-                WHERE a.DestinationId = d.DestinationId
-                FOR JSON PATH
-            )) AS Activities
+        IF @PageNumber IS NULL OR @PageNumber <= 0 SET @PageNumber = 1;
+        IF @PageSize IS NULL OR @PageSize <= 0 SET @PageSize = 10;
 
-        FROM Destination d
-        ORDER BY d.Name ASC
-        FOR JSON PATH, INCLUDE_NULL_VALUES;
+        SET @Offset = (@PageNumber - 1) * @PageSize;
+        SELECT @TotalRecords = COUNT(*) FROM Destination;
+        SELECT
+            @TotalRecords AS TotalRecords,
+            (
+                SELECT 
+                    d.DestinationId,
+                    d.[Name],
+                    d.ShortDescription,
+                    d.LongDescription,
+                    d.[Location],
+                    d.Latitude,
+                    d.Longitude,
+                    d.AverageWeather,
+                    d.AccessDifficulty,
+                    
+                    -- Imágenes
+                    JSON_QUERY((
+                        SELECT ImageUrl, IsCover, AltText
+                        FROM DestinationImage di
+                        WHERE di.DestinationId = d.DestinationId
+                        FOR JSON PATH
+                    )) AS Images,
+
+                    -- Actividades
+                    JSON_QUERY((
+                        SELECT ActivityName, IconName
+                        FROM Activity a
+                        WHERE a.DestinationId = d.DestinationId
+                        FOR JSON PATH
+                    )) AS Activities
+
+                FROM Destination d
+                ORDER BY d.Name ASC
+                OFFSET @Offset ROWS
+                FETCH NEXT @PageSize ROWS ONLY
+                FOR JSON PATH, INCLUDE_NULL_VALUES
+            ) AS Data
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER, INCLUDE_NULL_VALUES;
     END
 END
 GO

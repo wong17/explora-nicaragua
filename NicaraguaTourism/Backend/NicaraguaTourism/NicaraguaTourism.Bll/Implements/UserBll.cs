@@ -42,11 +42,15 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<IEnumerable<UserDto>>> GetAllAsync()
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> GetPaginatedAsync(int? page, int? rows)
         {
-            var dalResponse = await repository.GetAll();
+            if (page.HasValue && page <= 0)
+                return CreateValidationApiResponse<PaginatedResult<UserDto>>("El número de página no es válido.");
 
-            return MapApiResponse(dalResponse, result => result);
+            if (rows.HasValue && rows <= 0)
+                return CreateValidationApiResponse<PaginatedResult<UserDto>>("El número de filas no es válido.");
+
+            return await repository.GetPaginated(page ?? 1, rows ?? 50);
         }
 
         public async Task<ApiResponse<UserDto>> GetByIdAsync(int id)

@@ -9,10 +9,10 @@ namespace NicaraguaTourism.Dal.Repository.Interfaces
         IRepositoryCreate<User, int>,
         IRepositoryUpdate<User, bool>,
         IRepositoryDelete<int, bool>,
-        IRepositoryGetById<int, UserDto>,
-        IRepositoryGetAll<UserDto>
+        IRepositoryGetById<int, UserDto>
     {
         Task<ApiResponse<int>> Login(UserLoginDto loginDto);
         Task<User?> GetByEmail(string email);
+        Task<ApiResponse<PaginatedResult<UserDto>>> GetPaginated(int? page, int? rows);
     }
 }

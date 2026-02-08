@@ -10,7 +10,7 @@ namespace NicaraguaTourism.Bll.Mappings
         [MapperIgnoreTarget(nameof(User.UserId))]
         [MapperIgnoreTarget(nameof(User.CreatedAt))]
         public partial User UserRegisterDtoToUser(UserRegisterDto dto);
-        
+
         [MapperIgnoreTarget(nameof(User.Password))]
         [MapperIgnoreTarget(nameof(User.CreatedAt))]
         public partial User UserUpdateToDto(UserUpdateDto dto);

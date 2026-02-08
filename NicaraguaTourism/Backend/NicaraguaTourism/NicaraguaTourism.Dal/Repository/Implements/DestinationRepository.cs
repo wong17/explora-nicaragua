@@ -26,19 +26,19 @@ namespace NicaraguaTourism.Dal.Repository.Implements
             return MapToApiResponse<bool>(spResponse);
         }
 
-        public async Task<ApiResponse<IEnumerable<DestinationDto>>> GetAll()
-        {
-            var jsonResult = await _connector.QueryJsonAsync("uspGetDestinations");
-
-            return MapJsonToApiResponse<IEnumerable<DestinationDto>>(jsonResult, "No se encontraron destinos turísticos.");
-        }
-
         public async Task<ApiResponse<DestinationDto>> GetById(int id)
         {
             var parameters = new { DestinationId = id };
             var jsonResult = await _connector.QueryJsonAsync("uspGetDestinations", parameters);
 
-            return MapJsonToApiResponse<DestinationDto>(jsonResult, "Destino turístico no encontrado.");
+            return MapJsonToApiResponse<DestinationDto>(jsonResult);
+        }
+
+        public async Task<ApiResponse<PaginatedResult<DestinationDto>>> GetPaginated(int? page, int? rows)
+        {
+            var parameters = new { PageNumber = page, PageSize = rows };
+            var jsonResult = await _connector.QueryJsonAsync("uspGetDestinations", parameters);
+            return MapJsonToApiResponse<PaginatedResult<DestinationDto>>(jsonResult);
         }
 
         public async Task<ApiResponse<bool>> Update(DestinationUpdateDto updateDto, int sessionUserId)

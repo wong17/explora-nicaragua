@@ -27,15 +27,15 @@ namespace NicaraguaTourism.Dal.Repository.Implements
         {
             var parameters = new { UserId = id };
             var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspDeleteUser", parameters);
-            
+
             return MapToApiResponse<bool>(spResponse);
         }
 
-        public async Task<ApiResponse<IEnumerable<UserDto>>> GetAll()
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> GetPaginated(int? page, int? rows)
         {
+            var parameters = new { PageNumber = page, PageSize = rows };
             var jsonResult = await _connector.QueryJsonAsync("uspGetUsers");
-            
-            return MapJsonToApiResponse<IEnumerable<UserDto>>(jsonResult, "No se encontraron usuarios.");
+            return MapJsonToApiResponse<PaginatedResult<UserDto>>(jsonResult);
         }
 
         public async Task<User?> GetByEmail(string email)
@@ -49,13 +49,8 @@ namespace NicaraguaTourism.Dal.Repository.Implements
         public async Task<ApiResponse<UserDto>> GetById(int id)
         {
             var parameters = new { UserId = id };
-            var result = await _connector.QuerySingleOrDefaultAsync<UserDto>("uspGetUsers", parameters);
-            if (result is null)
-            {
-                return CreateNotFoundApiResponse<UserDto>("Usuario no encontrado.");
-            }
-
-            return CreateSuccessApiResponse(result);
+            var jsonResult = await _connector.QueryJsonAsync("uspGetUsers", parameters);
+            return MapJsonToApiResponse<UserDto>(jsonResult);
         }
 
         public async Task<ApiResponse<int>> Login(UserLoginDto loginDto)
@@ -66,7 +61,7 @@ namespace NicaraguaTourism.Dal.Repository.Implements
                 loginDto.Password
             };
             var spResponse = await _connector.QuerySingleOrDefaultAsync<SpResponse>("uspLoginUser", parameters);
-            
+
             return MapToApiResponse<int>(spResponse);
         }
 

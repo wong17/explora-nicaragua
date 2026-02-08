@@ -1,4 +1,5 @@
-﻿using NicaraguaTourism.Dal.Repository.Interfaces.Base;
+﻿using NicaraguaTourism.Common.Runtime;
+using NicaraguaTourism.Dal.Repository.Interfaces.Base;
 using NicaraguaTourism.Entities.Dtos;
 
 namespace NicaraguaTourism.Dal.Repository.Interfaces
@@ -7,8 +8,8 @@ namespace NicaraguaTourism.Dal.Repository.Interfaces
         IRepositoryCreateAudited<DestinationRegisterDto, int, int>,
         IRepositoryUpdateAudited<DestinationUpdateDto, bool, int>,
         IRepositoryDelete<int, bool>,
-        IRepositoryGetById<int, DestinationDto>,
-        IRepositoryGetAll<DestinationDto>
+        IRepositoryGetById<int, DestinationDto>
     {
+        Task<ApiResponse<PaginatedResult<DestinationDto>>> GetPaginated(int? page, int? rows);
     }
 }

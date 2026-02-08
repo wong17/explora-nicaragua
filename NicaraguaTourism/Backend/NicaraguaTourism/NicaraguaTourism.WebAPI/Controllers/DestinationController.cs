@@ -71,11 +71,12 @@ namespace NicaraguaTourism.WebAPI.Controllers
             return HandleApiResponse(response);
         }
 
-        [HttpGet("get_all")]
-        [ProducesResponseType(typeof(ApiResponse<IEnumerable<DestinationDto>>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("get_paginated")]
+        [ProducesResponseType(typeof(ApiResponse<PaginatedResult<DestinationDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetPaginated([FromQuery] int? page, [FromQuery] int? rows)
         {
-            var response = await destinationBll.GetAllAsync();
+            var response = await destinationBll.GetPaginatedAsync(page, rows);
             return HandleApiResponse(response);
         }
 

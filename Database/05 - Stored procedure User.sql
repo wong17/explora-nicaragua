@@ -106,12 +106,15 @@ GO
 
 -- OBTENER USUARIOS (Get)
 CREATE OR ALTER PROCEDURE uspGetUsers (
-    @UserId INT = NULL
+    @UserId INT = NULL,
+    @PageNumber INT = NULL,
+    @PageSize INT = NULL
 )
 AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- 
     IF @UserId IS NOT NULL
     BEGIN
         SELECT 
@@ -123,21 +126,40 @@ BEGIN
             u.CreatedAt
         FROM [User] u
         INNER JOIN [Role] r ON u.RoleId = r.RoleId
-        WHERE u.UserId = @UserId;
+        WHERE u.UserId = @UserId
+        FOR JSON PATH, INCLUDE_NULL_VALUES, WITHOUT_ARRAY_WRAPPER;
     END
+
+    -- 
     ELSE
     BEGIN
-        SELECT 
-            u.UserId,
-            u.FullName,
-            u.Email,
-            u.RoleId,
-            r.RoleName,
-            u.CreatedAt
-        FROM [User] u
-        INNER JOIN [Role] r ON u.RoleId = r.RoleId
-        ORDER BY u.FullName ASC
-        FOR JSON PATH, INCLUDE_NULL_VALUES;
+        DECLARE @Offset INT, @TotalRecords INT;
+
+        IF @PageNumber IS NULL OR @PageNumber <= 0 SET @PageNumber = 1;
+        IF @PageSize IS NULL OR @PageSize <= 0 SET @PageSize = 10;
+
+        SET @Offset = (@PageNumber - 1) * @PageSize;
+
+        SELECT @TotalRecords = COUNT(*) FROM [User];
+
+        SELECT
+            @TotalRecords AS TotalRecords,
+            (
+                SELECT 
+                    u.UserId,
+                    u.FullName,
+                    u.Email,
+                    u.RoleId,
+                    r.RoleName,
+                    u.CreatedAt
+                FROM [User] u
+                INNER JOIN [Role] r ON u.RoleId = r.RoleId
+                ORDER BY u.FullName ASC
+                OFFSET @Offset ROWS
+                FETCH NEXT @PageSize ROWS ONLY
+                FOR JSON PATH, INCLUDE_NULL_VALUES
+            ) AS Data
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER, INCLUDE_NULL_VALUES;
     END
 END
 GO
