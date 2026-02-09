@@ -125,26 +125,36 @@
 /* Acciones en Tabla */
 .action-btn-edit,
 .action-btn-delete {
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border: none !important;
     border-radius: 50%;
     width: 2.2rem;
     height: 2.2rem;
-    transition: all 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #ffffff !important;
 }
 
 .action-btn-edit {
-    color: #3b82f6 !important;
+    background-color: #3b82f6 !important;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
+    margin-right: 0.75rem !important;
 }
 
 .action-btn-delete {
-    color: #ef4444 !important;
+    background-color: #ef4444 !important;
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
 }
 
-.action-btn-edit:hover,
+.action-btn-edit:hover {
+    background-color: #2563eb !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+}
+
 .action-btn-delete:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: white !important;
+    background-color: #dc2626 !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
 }
 
 /* Paginador Oscuro */
