@@ -38,6 +38,6 @@ p {
 
 body {
     min-height: 100vh;
-    background: black;
+    background: #0f0f0f;
     font-family: var(--font-body);
 }
