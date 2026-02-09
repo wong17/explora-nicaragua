@@ -61,7 +61,6 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th class="col-toggler"></th>
 
           <th class="col-image text-center">
             <span class="header-title">Imagen</span>
@@ -113,7 +112,7 @@
           <th pSortableColumn="accessDifficulty" class="col-difficulty">
             <div class="d-flex flex-column gap-2">
               <span class="header-title">
-                Dificultad <p-sortIcon field="accessDifficulty"></p-sortIcon>
+                Dificultad de acceso <p-sortIcon field="accessDifficulty"></p-sortIcon>
               </span>
               <p-columnFilter
                 type="text"
@@ -131,20 +130,8 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-dest let-expanded="expanded">
+      <ng-template pTemplate="body" let-dest>
         <tr>
-          <td>
-            <button
-              type="button"
-              pButton
-              pRipple
-              [pRowToggler]="dest"
-              class="p-button-text p-button-rounded p-button-plain text-white"
-              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-              (click)="$event.stopPropagation()"
-            ></button>
-          </td>
-
           <td class="text-center">
             <div class="img-wrapper shadow-sm">
               <img
@@ -228,43 +215,6 @@
               pTooltip="Eliminar"
               tooltipPosition="left"
             ></button>
-          </td>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="rowexpansion" let-dest>
-        <tr>
-          <td colspan="7" class="p-0">
-            <div class="p-3 bg-dark-subtle border-bottom border-secondary">
-              <div class="row g-3">
-                <div class="col-12">
-                  <h6 class="text-primary fw-bold mb-1">
-                    <i class="pi pi-info-circle me-1"></i>Descripción Corta
-                  </h6>
-                  <p class="text-light fst-italic mb-2">
-                    {{ dest.shortDescription }}
-                  </p>
-                </div>
-
-                <div class="col-12">
-                  <h6 class="text-primary fw-bold mb-1">
-                    <i class="pi pi-align-justify me-1"></i>Detalle Completo
-                  </h6>
-                  @if(dest.longDescription) {
-                  <p
-                    class="text-secondary small text-justify"
-                    style="white-space: pre-line"
-                  >
-                    {{ dest.longDescription }}
-                  </p>
-                  } @else {
-                  <small class="text-muted"
-                    >No hay descripción detallada disponible.</small
-                  >
-                  }
-                </div>
-              </div>
-            </div>
           </td>
         </tr>
       </ng-template>
