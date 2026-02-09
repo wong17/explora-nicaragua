@@ -61,22 +61,20 @@
 
       <ng-template pTemplate="header">
         <tr>
-
           <th class="col-image text-center">
             <span class="header-title">Imagen</span>
           </th>
 
           <th pSortableColumn="name" class="col-name">
             <div class="d-flex flex-column gap-2">
-              <span class="header-title">
-                Nombre <p-sortIcon field="name"></p-sortIcon>
-              </span>
+              <span class="header-title"> Nombre <p-sortIcon field="name"></p-sortIcon> </span>
               <p-columnFilter
                 type="text"
                 field="name"
                 placeholder="Buscar nombre..."
                 class="w-100"
                 (click)="$event.stopPropagation()"
+                (keydown.space)="$event.stopPropagation()"
               ></p-columnFilter>
             </div>
           </th>
@@ -92,6 +90,7 @@
                 placeholder="Buscar ubicación..."
                 class="w-100"
                 (click)="$event.stopPropagation()"
+                (keydown.space)="$event.stopPropagation()"
               ></p-columnFilter>
             </div>
           </th>
@@ -100,12 +99,31 @@
             <div class="d-flex flex-column gap-2">
               <span class="header-title">Actividades</span>
               <p-columnFilter
-                type="text"
                 field="activities"
+                matchMode="activityFilter"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+                [showApplyButton]="false"
+                [showClearButton]="false"
                 placeholder="Buscar actividad..."
                 class="w-100"
                 (click)="$event.stopPropagation()"
-              ></p-columnFilter>
+                (keydown.space)="$event.stopPropagation()"
+              >
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <input
+                    pInputText
+                    type="text"
+                    [ngModel]="value"
+                    (ngModelChange)="filter($event)"
+                    class="p-inputtext w-100"
+                    placeholder="Buscar actividad..."
+                    (click)="$event.stopPropagation()"
+                    (keydown.space)="$event.stopPropagation()"
+                  />
+                </ng-template>
+              </p-columnFilter>
             </div>
           </th>
 
@@ -120,6 +138,7 @@
                 placeholder="Filtrar..."
                 class="w-100"
                 (click)="$event.stopPropagation()"
+                (keydown.space)="$event.stopPropagation()"
               ></p-columnFilter>
             </div>
           </th>

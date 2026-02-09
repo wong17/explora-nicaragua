@@ -1,13 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import {
   ApiResponseCode,
   DestinationService,
   DestinationSummaryDto,
   ToasterService
 } from '../../core/core.index';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, FilterService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -29,7 +30,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ConfirmDialogModule,
     IconFieldModule,
     InputIconModule,
-    InputTextModule
+    InputTextModule,
+    FormsModule
   ],
   providers: [ConfirmationService],
   templateUrl: './destination-manager.component.html',
@@ -40,12 +42,26 @@ export class DestinationManager implements OnInit {
   private destinationService = inject(DestinationService);
   private toasterService = inject(ToasterService);
   private confirmationService = inject(ConfirmationService);
+  private filterService = inject(FilterService);
 
   destinations = signal<DestinationSummaryDto[]>([]);
   loading = signal<boolean>(true);
 
   ngOnInit(): void {
     this.loadDestinations();
+    this.filterService.register('activityFilter', (value: { activityName: string }[], filter: string | null): boolean => {
+      // Si no hay filtro o el array es nulo, mostramos todo
+      if (!filter || !value || value.length === 0) {
+        return true;
+      }
+
+      const normalizedFilter = filter.toLowerCase().trim();
+
+      // Verificamos si ALGUNA actividad coincide
+      return value.some(act =>
+        act.activityName.toLowerCase().includes(normalizedFilter)
+      );
+    });
   }
 
   loadDestinations() {
