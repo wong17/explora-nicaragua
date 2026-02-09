@@ -49,15 +49,13 @@ export class DestinationManager implements OnInit {
 
   ngOnInit(): void {
     this.loadDestinations();
+    // Para poder filtrar por actividades, ya que es un array
     this.filterService.register('activityFilter', (value: { activityName: string }[], filter: string | null): boolean => {
-      // Si no hay filtro o el array es nulo, mostramos todo
       if (!filter || !value || value.length === 0) {
         return true;
       }
 
       const normalizedFilter = filter.toLowerCase().trim();
-
-      // Verificamos si ALGUNA actividad coincide
       return value.some(act =>
         act.activityName.toLowerCase().includes(normalizedFilter)
       );
