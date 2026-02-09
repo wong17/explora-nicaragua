@@ -120,6 +120,7 @@
     align-items: center !important;
     justify-content: center !important;
     gap: 0.5rem !important;
+    transition: all 0.2s;
 }
 
 /* Estado Hover */
@@ -128,21 +129,16 @@
     cursor: pointer;
 }
 
-/* Estado Loading (Cargando) */
-:host ::ng-deep .custom-btn-primary.p-button-loading {
+:host ::ng-deep .custom-btn-primary:disabled {
     background: var(--primary-green) !important;
-    opacity: 1 !important;
-    color: #ffffff !important;
+    opacity: 0.6 !important;
     cursor: wait !important;
+    color: #ffffff !important;
 }
 
-/* Icono de Carga (Spinner) */
-:host ::ng-deep .custom-btn-primary .p-button-loading-icon {
-    color: #ffffff !important;
-    width: 1rem !important;
-    height: 1rem !important;
-    margin: 0 !important;
-    padding: 0 !important;
+/* Aseguramos que el icono del check no desaparezca ni cambie */
+:host ::ng-deep .custom-btn-primary:disabled .p-button-icon {
+    display: block !important;
 }
 
 /* Icono Normal (Check) */

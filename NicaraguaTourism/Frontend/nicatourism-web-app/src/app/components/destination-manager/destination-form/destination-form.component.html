@@ -21,7 +21,7 @@
         label="Guardar Destino"
         icon="pi pi-check"
         class="custom-btn-primary"
-        [loading]="isLoading()"
+        [disabled]="isLoading()"
         (click)="save()"
       ></button>
     </div>
@@ -270,8 +270,15 @@
 
           <div class="d-flex justify-content-between align-items-center mt-3">
             <small class="text-warning">
-              <i class="pi pi-info-circle me-1"></i>Nota: La primera imagen subida se usará como
-              portada.
+              <i class="pi pi-info-circle me-1"></i>
+              @if (isEditMode) {
+                <span
+                  >Nota: Si subes nuevas fotos, <b>reemplazarán a las anteriores</b>.
+                  (Opcional)</span
+                >
+              } @else {
+                <span>Nota: La primera imagen subida se usará como portada. (Opcional)</span>
+              }
             </small>
 
             <button
