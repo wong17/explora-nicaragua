@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, NgZone, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -86,7 +86,7 @@ export class DestinationForm implements OnInit, OnDestroy {
   readonly DEFAULT_ZOOM = 8;
 
   isEditMode = false;
-  isLoading = false;
+  isLoading = signal(false);
   submitted = false;
 
   currentDestination: DestinationFormTemplate = this.createEmptyDestination();
@@ -157,7 +157,7 @@ export class DestinationForm implements OnInit, OnDestroy {
   }
 
   loadDestinationData(id: number) {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.destinationService.getById(id).subscribe({
       next: (resp) => {
         if (resp.isSuccess === ApiResponseCode.Success && resp.result) {
@@ -184,7 +184,7 @@ export class DestinationForm implements OnInit, OnDestroy {
           this.toasterService.error('No se encontró el destino');
           this.router.navigate(['/admin/destinos']);
         }
-        this.isLoading = false;
+        this.isLoading.set(false);
       },
       error: () => {
         this.toasterService.error('Error de conexión al cargar datos');
@@ -339,10 +339,10 @@ export class DestinationForm implements OnInit, OnDestroy {
     }
 
     // Ejecutamos la petición
-    this.isLoading = true;
+    this.isLoading.set(true);
     requestObservable.subscribe({
       next: (resp) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         if (resp.isSuccess === ApiResponseCode.Success) {
           this.toasterService.success(resp.message, 'Éxito');
           this.router.navigate(['/admin/destinos']);
@@ -351,7 +351,7 @@ export class DestinationForm implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.toasterService.error(err.error?.message || 'Error de conexión', 'Error');
       }
     });
