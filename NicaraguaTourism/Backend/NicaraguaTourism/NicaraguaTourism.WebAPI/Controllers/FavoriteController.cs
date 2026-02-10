@@ -25,11 +25,11 @@ namespace NicaraguaTourism.WebAPI.Controllers
             return HandleApiResponse(response);
         }
 
-        [HttpGet("get_by_user/{userId:int}")]
-        [ProducesResponseType(typeof(ApiResponse<IEnumerable<FavoriteDto>>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByUser(int userId)
+        [HttpGet("get_paginated/{userId:int}")]
+        [ProducesResponseType(typeof(ApiResponse<PaginatedResult<FavoriteDto>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPaginated(int userId, [FromQuery] int? page, [FromQuery] int? rows)
         {
-            var response = await favoriteBll.GetAllByIdAsync(userId);
+            var response = await favoriteBll.GetPaginatedAsync(userId, page, rows);
             return HandleApiResponse(response);
         }
 

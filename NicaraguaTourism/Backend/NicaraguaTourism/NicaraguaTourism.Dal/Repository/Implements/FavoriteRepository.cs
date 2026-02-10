@@ -32,12 +32,11 @@ namespace NicaraguaTourism.Dal.Repository.Implements
             return MapToApiResponse<bool>(spResponse);
         }
 
-        public async Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllById(int id)
+        public async Task<ApiResponse<PaginatedResult<FavoriteDto>>> GetPaginated(int userId, int? page, int? rows)
         {
-            var parameters = new { UserId = id };
+            var parameters = new { UserId = userId, PageNumber = page, PageSize = rows };
             var jsonResult = await _connector.QueryJsonAsync("uspGetUserFavorites", parameters);
-
-            return MapJsonToApiResponse<IEnumerable<FavoriteDto>>(jsonResult, "Aún no tienes destinos favoritos.");
+            return MapJsonToApiResponse<PaginatedResult<FavoriteDto>>(jsonResult);
         }
 
         public async Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto)

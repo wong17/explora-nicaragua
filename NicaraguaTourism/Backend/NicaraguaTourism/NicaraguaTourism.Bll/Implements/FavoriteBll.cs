@@ -30,15 +30,18 @@ namespace NicaraguaTourism.Bll.Implements
             return MapApiResponse(dalResponse, result => result);
         }
 
-        public async Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllByIdAsync(int id)
+        public async Task<ApiResponse<PaginatedResult<FavoriteDto>>> GetPaginatedAsync(int userId, int? page, int? rows)
         {
-            if (id <= 0)
-            {
-                return CreateValidationApiResponse<IEnumerable<FavoriteDto>>("El ID de usuario no es válido.");
-            }
+            if (userId <= 0)
+                return CreateValidationApiResponse<PaginatedResult<FavoriteDto>>("El ID de usuario no es válido.");
 
-            var dalResponse = await repository.GetAllById(id);
-            return MapApiResponse(dalResponse, result => result);
+            if (page.HasValue && page <= 0)
+                return CreateValidationApiResponse<PaginatedResult<FavoriteDto>>("El número de página no es válido.");
+
+            if (rows.HasValue && rows <= 0)
+                return CreateValidationApiResponse<PaginatedResult<FavoriteDto>>("El número de filas no es válido.");
+
+            return await repository.GetPaginated(userId, page ?? 1, rows ?? 50);
         }
 
         public async Task<ApiResponse<bool>> IsFavoriteAsync(FavoriteInteractionDto interactionDto)

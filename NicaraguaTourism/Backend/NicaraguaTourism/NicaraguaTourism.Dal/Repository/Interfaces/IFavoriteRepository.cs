@@ -6,9 +6,9 @@ namespace NicaraguaTourism.Dal.Repository.Interfaces
 {
     public interface IFavoriteRepository :
         IRepositoryCreate<FavoriteInteractionDto, bool>,
-        IRepositoryDelete<FavoriteInteractionDto, bool>,
-        IRepositoryGetAllById<int, FavoriteDto>
+        IRepositoryDelete<FavoriteInteractionDto, bool>
     {
         Task<ApiResponse<bool>> IsFavorite(FavoriteInteractionDto interactionDto);
+        Task<ApiResponse<PaginatedResult<FavoriteDto>>> GetPaginated(int userId, int? page, int? rows);
     }
 }

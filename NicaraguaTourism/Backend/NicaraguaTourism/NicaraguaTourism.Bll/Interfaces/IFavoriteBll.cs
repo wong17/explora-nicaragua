@@ -7,7 +7,7 @@ namespace NicaraguaTourism.Bll.Interfaces
     {
         Task<ApiResponse<bool>> CreateAsync(FavoriteInteractionDto createDto);
         Task<ApiResponse<bool>> DeleteAsync(FavoriteInteractionDto dto);
-        Task<ApiResponse<IEnumerable<FavoriteDto>>> GetAllByIdAsync(int id);
+        Task<ApiResponse<PaginatedResult<FavoriteDto>>> GetPaginatedAsync(int userId, int? page, int? rows);
         Task<ApiResponse<bool>> IsFavoriteAsync(FavoriteInteractionDto interactionDto);
     }
 }

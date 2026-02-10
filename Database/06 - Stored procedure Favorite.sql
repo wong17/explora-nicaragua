@@ -77,42 +77,64 @@ GO
 
 -- OBTENER MIS FAVORITOS (Get My Wishlist)
 CREATE OR ALTER PROCEDURE uspGetUserFavorites (
-    @UserId INT
+    @UserId INT,
+    @PageNumber INT = NULL,
+    @PageSize INT = NULL
 )
 AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE @Offset INT, @TotalRecords INT;
+
+    IF @PageNumber IS NULL OR @PageNumber <= 0 SET @PageNumber = 1;
+    IF @PageSize IS NULL OR @PageSize <= 0 SET @PageSize = 10;
+
+    SET @Offset = (@PageNumber - 1) * @PageSize;
+
+    SELECT @TotalRecords = COUNT(*) 
+    FROM Favorite 
+    WHERE UserId = @UserId;
+
     SELECT 
-        f.FavoriteId,
-        f.AddedAt,
-        
-        -- Objeto Destino Completo (Anidado)
-        JSON_QUERY((
-            SELECT 
-                d.DestinationId,
-                d.[Name],
-                d.ShortDescription,
-                d.[Location],
-                d.AverageWeather,
-                d.AccessDifficulty,
-                
-                -- Foto de Portada (Solo traemos la que es IsCover = 1)
+        @TotalRecords AS TotalRecords,
+        JSON_QUERY(
+            ISNULL(
                 (
-                    SELECT TOP 1 ImageUrl 
-                    FROM DestinationImage di 
-                    WHERE di.DestinationId = d.DestinationId AND di.IsCover = 1
-                ) AS CoverImage
+                    SELECT 
+                        f.FavoriteId,
+                        f.AddedAt,
+                        
+                        JSON_QUERY((
+                            SELECT 
+                                d.DestinationId,
+                                d.[Name],
+                                d.ShortDescription,
+                                d.[Location],
+                                d.AverageWeather,
+                                d.AccessDifficulty,
+                                (
+                                    SELECT TOP 1 di.ImageUrl 
+                                    FROM DestinationImage di 
+                                    WHERE di.DestinationId = d.DestinationId AND di.IsCover = 1
+                                ) AS CoverImage
 
-            FROM Destination d
-            WHERE d.DestinationId = f.DestinationId
-            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
-        )) AS Destination
+                            FROM Destination d
+                            WHERE d.DestinationId = f.DestinationId
+                            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+                        )) AS Destination
 
-    FROM Favorite f
-    WHERE f.UserId = @UserId
-    ORDER BY f.AddedAt DESC -- Los más recientes primero
-    FOR JSON PATH;
+                    FROM Favorite f
+                    WHERE f.UserId = @UserId
+                    ORDER BY f.AddedAt DESC -- Ordenar por más recientes
+                    OFFSET @Offset ROWS 
+                    FETCH NEXT @PageSize ROWS ONLY
+                    FOR JSON PATH, INCLUDE_NULL_VALUES
+                ),
+                '[]' -- Si devuelve NULL (sin favoritos), forzamos un array vacío
+            )
+        ) AS Data
+    FOR JSON PATH, WITHOUT_ARRAY_WRAPPER, INCLUDE_NULL_VALUES;
 END
 GO
 
