@@ -1,0 +1,181 @@
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/assets/images/hero/ometepe-hero.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, var(--accent-green), var(--hover-green));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    letter-spacing: -1px;
+}
+
+/* Buscador Glassmorphism */
+.search-box-wrapper {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s;
+}
+
+.search-box-wrapper:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.hero-search-input {
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    font-size: 1.1rem;
+    padding-left: 2.5rem !important;
+}
+
+.hero-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-search-input:focus {
+    box-shadow: none !important;
+}
+
+.pi-search {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 1.2rem;
+}
+
+.btn-hero-primary {
+    background-color: var(--primary-green) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.8rem 2rem !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    transition: background-color 0.2s;
+}
+
+.btn-hero-primary:hover {
+    background-color: var(--hover-green) !important;
+    color: white !important;
+}
+
+.btn-hero-secondary:hover {
+    background-color: white !important;
+    color: black !important;
+}
+
+.photo-credit {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.photo-credit a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.photo-credit a:hover {
+    color: var(--accent-green);
+    text-decoration: underline;
+}
+
+/* Animaciones */
+.animate-fade-down {
+    animation: fadeDown 1s ease-out;
+}
+
+.animate-fade-up {
+    animation: fadeUp 1s ease-out backwards;
+}
+
+.delay-100 {
+    animation-delay: 0.2s;
+}
+
+.delay-200 {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-search-input {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,63 @@
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content container">
+    <div class="text-center text-white">
+      <h1 class="display-3 fw-bold mb-3 animate-fade-down">
+        Descubre la Tierra de <br />
+        <span class="text-gradient">Lagos y Volcanes</span>
+      </h1>
+
+      <p class="lead mb-5 opacity-90 animate-fade-up">
+        Tu próxima aventura en Nicaragua comienza aquí. <br class="d-none d-md-block" />
+        Explora destinos únicos, cultura vibrante y naturaleza virgen.
+      </p>
+
+      <div class="search-box-wrapper animate-fade-up delay-100">
+        <div class="p-input-icon-left w-100">
+          <i class="pi pi-search text-xl"></i>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="searchQuery"
+            (keydown.enter)="onSearch()"
+            placeholder="¿A dónde quieres ir? (Ej: Ometepe, Corn Island...)"
+            class="hero-search-input"
+          />
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex justify-content-center gap-3 animate-fade-up delay-200">
+        <button
+          pButton
+          label="Explorar Destinos"
+          class="p-button-rounded btn-hero-primary"
+          routerLink="/destinos"
+        ></button>
+        <button
+          pButton
+          label="Ver Mapa"
+          class="p-button-rounded p-button-outlined text-white border-white btn-hero-secondary"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="photo-credit">
+    <i class="pi pi-camera"></i>
+    <span>
+      Foto por
+      <a
+        href="https://unsplash.com/@moodytones?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+        target="_blank"
+        >Sophie</a
+      >
+      en
+      <a
+        href="https://unsplash.com/photos/a-mountain-in-the-distance-with-trees-in-the-foreground-9qt2oLJ7Xv0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+        target="_blank"
+        >Unsplash</a
+      >
+    </span>
+  </div>
+</section>
