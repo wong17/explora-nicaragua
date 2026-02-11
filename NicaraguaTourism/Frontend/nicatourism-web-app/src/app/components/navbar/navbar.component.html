@@ -71,7 +71,7 @@
               }
 
               <li>
-                <a class="dropdown-item" routerLink="/favoritos">
+                <a class="dropdown-item" (click)="openFavorites()">
                   <i class="fa-solid fa-heart text-danger me-2"></i> Mis Favoritos
                 </a>
               </li>
@@ -96,3 +96,5 @@
     </div>
   </div>
 </nav>
+
+<app-favorites-dialog [(visible)]="showFavorites"></app-favorites-dialog>

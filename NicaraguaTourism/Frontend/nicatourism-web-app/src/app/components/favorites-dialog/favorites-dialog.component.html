@@ -1,0 +1,86 @@
+<p-dialog
+  header="Mis Favoritos"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '90vw', maxWidth: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  styleClass="dark-dialog"
+  (onHide)="closeDialog()"
+>
+  <div class="search-wrapper">
+    <input
+      pInputText
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Buscar destino..."
+      class="custom-large-input"
+    />
+  </div>
+
+  <div class="favorites-content">
+    @if (isLoading()) {
+      <div class="loader-container">
+        <i class="pi pi-spin pi-spinner loader-icon"></i>
+      </div>
+
+    } @else if (filteredFavorites().length === 0) {
+      <div class="empty-state-container">
+        <div class="empty-icon-wrapper">
+          <i class="pi pi-heart text-secondary fs-1"></i>
+        </div>
+
+        @if (searchQuery()) {
+          <h6 class="text-white mt-3">Sin resultados</h6>
+          <p class="text-secondary small">Intenta con otro nombre.</p>
+        } @else {
+          <h6 class="text-white mt-3">Aún no tienes favoritos</h6>
+          <p class="text-secondary small mb-4">Guarda los lugares que te gusten.</p>
+
+          <p-button
+            label="Explorar Destinos"
+            styleClass="btn-primary-custom"
+            (onClick)="closeDialog()"
+            [routerLink]="['/destinos']"
+          >
+          </p-button>
+        }
+      </div>
+
+    } @else {
+      <div class="favorites-list">
+        @for (fav of filteredFavorites(); track fav.favoriteId) {
+          <div class="fav-card">
+            <div class="fav-img-container">
+              <img
+                [src]="fav.destination?.coverImage || 'assets/placeholder.jpg'"
+                class="fav-img"
+              />
+            </div>
+            <div class="fav-info">
+              <div class="fav-header">
+                <span class="fav-name">
+                  {{ fav.destination?.name }}
+                </span>
+                @if (fav.destination?.averageWeather) {
+                  <span class="fav-weather"> {{ fav.destination?.averageWeather }}° </span>
+                }
+              </div>
+              <div class="fav-location">
+                <i class="pi pi-map-marker location-icon"></i>
+                {{ fav.destination?.location || 'Sin ubicación' }}
+              </div>
+            </div>
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="p-button-text p-button-danger p-button-rounded btn-delete"
+              (click)="fav.destination && removeFavorite(fav.destination.destinationId)"
+            ></button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</p-dialog>
