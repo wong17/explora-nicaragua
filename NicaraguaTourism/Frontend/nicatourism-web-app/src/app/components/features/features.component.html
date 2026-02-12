@@ -1,0 +1,28 @@
+<section class="features-section py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="section-title text-white fw-bold mb-3">
+        ¿Por qué elegir <span class="text-gradient">Explora Nicaragua?</span>
+      </h2>
+      <p class="text-secondary section-subtitle mx-auto">
+        Más que un mapa, somos tu guía definitiva para redescubrir el país.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      @for (item of features; track item.title) {
+        <div class="col-md-4">
+          <div class="feature-card p-4 h-100 text-center rounded-4" #featureCard>
+            <div class="icon-wrapper mb-4 mx-auto">
+              <i [class]="item.icon + ' text-3xl'"></i>
+            </div>
+            <h4 class="text-white fw-bold mb-3">{{ item.title }}</h4>
+            <p class="text-secondary mb-0">
+              {{ item.description }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

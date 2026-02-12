@@ -4,13 +4,14 @@ import Lenis from 'lenis';
 import { register as registerSwiper } from 'swiper/element/bundle';
 import { Navbar } from "./components/navbar/navbar.component";
 import { Hero } from "./components/hero/hero.component";
+import { Features } from './components/features/features.component';
 import { ToastModule } from 'primeng/toast';
 import { AuthModal } from './components/auth-modal/auth-modal.component';
 import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Hero, ToastModule, AuthModal],
+  imports: [RouterOutlet, Navbar, Hero, Features, ToastModule, AuthModal],
   templateUrl: './app.html',
   styleUrl: './app.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
