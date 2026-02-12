@@ -6,13 +6,14 @@ import { Navbar } from "./components/navbar/navbar.component";
 import { Hero } from "./components/hero/hero.component";
 import { Features } from './components/features/features.component';
 import { Categories } from './components/categories/categories.component';
+import { Footer } from './components/footer/footer.component';
 import { ToastModule } from 'primeng/toast';
 import { AuthModal } from './components/auth-modal/auth-modal.component';
 import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Hero, Features, Categories, ToastModule, AuthModal],
+  imports: [RouterOutlet, Navbar, Hero, Features, Categories, Footer, ToastModule, AuthModal],
   templateUrl: './app.html',
   styleUrl: './app.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

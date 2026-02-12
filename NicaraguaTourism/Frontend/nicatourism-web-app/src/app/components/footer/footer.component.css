@@ -1,0 +1,46 @@
+.footer-section {
+    background-color: #050505;
+    padding: 4rem 0 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Marca */
+.brand-icon {
+    color: var(--primary-green);
+    font-size: 1.5rem;
+}
+
+.text-green {
+    color: var(--primary-green);
+}
+
+.footer-text {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Enlaces */
+.footer-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--primary-green);
+    transform: translateX(5px);
+}
+
+@media (min-width: 768px) {
+    .footer-link:hover {
+        transform: translateX(-5px);
+    }
+}
+
+/* Divisor */
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}

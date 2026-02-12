@@ -1,0 +1,38 @@
+<footer class="footer-section">
+  <div class="container">
+    <div class="row g-5 justify-content-between">
+      <div class="col-lg-5 col-md-6">
+        <a
+          routerLink="/"
+          class="footer-brand d-flex align-items-center gap-2 mb-3 text-decoration-none"
+        >
+          <i class="fa-solid fa-location-dot brand-icon"></i>
+          <span class="text-white fw-bold fs-4"
+            >Explora <span class="text-green">Nicaragua</span></span
+          >
+        </a>
+        <p class="footer-text mb-0">
+          Tu guía definitiva para descubrir la tierra de lagos y volcanes. Planea tu próxima
+          aventura con información real y verificada.
+        </p>
+      </div>
+
+      <div class="col-lg-3 col-md-6 d-flex flex-column align-items-md-end justify-content-center">
+        <h5 class="text-white fw-bold mb-3 d-none d-md-block">Mapa del Sitio</h5>
+        <ul class="list-unstyled d-flex flex-column gap-2 align-items-start align-items-md-end">
+          <li><a routerLink="/" class="footer-link">Inicio</a></li>
+          <li><a routerLink="/destinos" class="footer-link">Destinos</a></li>
+          <li><a routerLink="/mapa" class="footer-link">Mapa Interactivo</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider my-4" />
+
+    <div class="text-center">
+      <p class="footer-text mb-0 small opacity-75">
+        &copy; {{ currentYear }} Explora Nicaragua. Todos los derechos reservados.
+      </p>
+    </div>
+  </div>
+</footer>
