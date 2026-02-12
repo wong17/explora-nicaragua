@@ -1,0 +1,276 @@
+.categories-section {
+    position: relative;
+    padding: 3rem 0 3rem 0;
+    overflow: hidden;
+    background-color: #0f0f0f;
+}
+
+.section-header {
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+}
+
+.swiper-wrapper-relative {
+    position: relative;
+    width: 100%;
+}
+
+/* SWIPER PRINCIPAL */
+.main-swiper {
+    width: 100%;
+    height: 60vh;
+    min-height: 450px;
+    max-height: 650px;
+}
+
+.main-slide {
+    width: 85vw;
+    height: 100%;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0.85;
+    transform: scale(0.92);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+@media (min-width: 992px) {
+    .main-slide {
+        width: 55vw;
+    }
+}
+
+.main-slide.swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+}
+
+.category-card {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s ease;
+}
+
+.main-slide.swiper-slide-active .category-card img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    z-index: 1;
+}
+
+.card-content {
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+    z-index: 2;
+    text-align: left;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.6s ease 0.3s;
+}
+
+.main-slide.swiper-slide-active .card-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.card-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0;
+    line-height: 1;
+}
+
+.card-subtitle {
+    color: var(--primary-green);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.badge-blur {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.8rem;
+    display: inline-block;
+}
+
+/* PAGINACIÓN */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.external-pagination {
+    display: flex;
+    justify-content: center;
+    width: auto !important;
+}
+
+:host ::ng-deep .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.3);
+    width: 8px;
+    height: 8px;
+    margin: 0 6px !important;
+    opacity: 1;
+    transition: all 0.3s;
+}
+
+:host ::ng-deep .swiper-pagination-bullet-active {
+    background: var(--primary-green);
+    width: 24px;
+    border-radius: 4px;
+}
+
+/* SWIPER GALERÍA (INFERIOR) */
+.gallery-wrapper {
+    width: 100%;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.gallery-swiper {
+    width: 100%;
+    height: 250px;
+    padding: 10px 0;
+}
+
+.gallery-slide {
+    width: 16.5vw !important;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    opacity: 1;
+    transition: transform 0.3s;
+}
+
+.gallery-slide:hover {
+    transform: scale(1.02);
+}
+
+.gallery-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.gallery-overlay span {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* CONTROLES FLOTANTES */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 50;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: var(--primary-green);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.custom-prev {
+    left: 2rem;
+}
+
+.custom-next {
+    right: 2rem;
+}
+
+@media (max-width: 768px) {
+    .main-swiper {
+        height: 50vh;
+    }
+
+    .card-title {
+        font-size: 2rem;
+    }
+
+    .nav-btn {
+        display: none;
+    }
+
+    .gallery-slide {
+        width: 40vw !important;
+    }
+
+    .gallery-swiper {
+        height: 180px;
+    }
+
+    .gallery-wrapper {
+        mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+}

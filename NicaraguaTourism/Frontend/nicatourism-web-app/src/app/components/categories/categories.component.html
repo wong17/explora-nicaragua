@@ -1,0 +1,50 @@
+<section class="categories-section">
+  <div class="container mb-4 text-center section-header">
+    <h2 class="text-white fw-bold section-title">Explora por Categoría</h2>
+    <p class="section-subtitle">Encuentra tu próximo destino ideal</p>
+  </div>
+
+  <div class="swiper-wrapper-relative">
+    <swiper-container #mainSwiper init="false" class="main-swiper">
+      @for (cat of categories(); track $index) {
+        <swiper-slide class="main-slide">
+          <a
+            [routerLink]="['/destinos']"
+            [queryParams]="{ category: cat.id }"
+            class="category-card"
+          >
+            <img [src]="cat.image" [alt]="cat.title" loading="eager" />
+            <div class="card-overlay"></div>
+            <div class="card-content">
+              <span class="badge-blur">{{ cat.count }}</span>
+              <h3 class="card-title">{{ cat.title }}</h3>
+              <p class="card-subtitle">{{ cat.subtitle }}</p>
+            </div>
+          </a>
+        </swiper-slide>
+      }
+    </swiper-container>
+
+    <button class="nav-btn custom-prev"><i class="pi pi-chevron-left"></i></button>
+    <button class="nav-btn custom-next"><i class="pi pi-chevron-right"></i></button>
+
+    <div class="pagination-wrapper">
+      <div class="external-pagination"></div>
+    </div>
+  </div>
+
+  <div class="gallery-wrapper mt-4">
+    <swiper-container #gallerySwiper init="false" class="gallery-swiper">
+      @for (item of galleryItems(); track $index) {
+        <swiper-slide class="gallery-slide">
+          <div class="gallery-card">
+            <img [src]="item.image" [alt]="item.title" loading="lazy" />
+            <div class="gallery-overlay">
+              <span>{{ item.title }}</span>
+            </div>
+          </div>
+        </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+</section>
