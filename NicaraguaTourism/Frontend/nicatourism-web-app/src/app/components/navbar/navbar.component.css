@@ -12,7 +12,7 @@
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Estado scrolled con el menu abierto --- */
+/* Estado scrolled con el menu abierto */
 .navbar-scrolled {
     min-height: var(--navbar-scrolled-height);
     padding: 0.5rem 0;
