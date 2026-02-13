@@ -296,7 +296,7 @@
 .description-text {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.85);
     display: -webkit-box;
     line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -306,8 +306,31 @@
 
 .card-footer-info {
     margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.5);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.stat-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.text-primary-green {
+    color: var(--primary-green);
+    font-size: 1rem;
 }
 
 .info-pill {
@@ -315,10 +338,11 @@
     color: var(--primary-green);
     background: rgba(22, 163, 74, 0.1);
     padding: 5px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
+    border: 1px solid rgba(22, 163, 74, 0.2);
 }
 
 .empty-icon-wrapper {

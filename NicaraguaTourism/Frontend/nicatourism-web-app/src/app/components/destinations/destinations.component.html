@@ -66,25 +66,45 @@
 
                 <div class="card-body">
                   <h3 class="card-title text-white mb-2">{{ dest.name }}</h3>
-                  <p class="description-text text-secondary">{{ dest.shortDescription }}</p>
+                  <p class="description-text">{{ dest.shortDescription }}</p>
 
-                  <div class="card-footer-info d-flex gap-2 mt-3 flex-wrap">
-                    @if (dest.accessDifficulty) {
-                      <span class="info-pill">
-                        <i class="pi pi-directions me-1"></i> {{ dest.accessDifficulty }}
-                      </span>
-                    }
-                    @if (dest.averageWeather) {
-                      <span class="info-pill">
-                        <i class="pi pi-sun me-1"></i> {{ dest.averageWeather }}°C
-                      </span>
-                    }
-                    @if (dest.activities && dest.activities.length > 0) {
-                      @for (act of dest.activities.slice(0, 2); track act.activityName) {
-                        <span class="info-pill">
-                          <i class="pi pi-compass me-1"></i> {{ act.activityName }}
-                        </span>
+                  <div class="card-footer-info mt-3">
+                    <div class="row g-3 mb-3">
+                      @if (dest.averageWeather) {
+                        <div class="col-6">
+                          <div class="stat-item">
+                            <span class="stat-label">Temperatura</span>
+                            <span class="stat-value">
+                              <i class="pi pi-sun text-primary-green"></i>
+                              {{ dest.averageWeather }}°C
+                            </span>
+                          </div>
+                        </div>
                       }
+                      @if (dest.accessDifficulty) {
+                        <div class="col-6">
+                          <div class="stat-item">
+                            <span class="stat-label">Dificultad</span>
+                            <span class="stat-value">
+                              <i class="pi pi-directions text-primary-green"></i>
+                              {{ dest.accessDifficulty }}
+                            </span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+
+                    @if (dest.activities && dest.activities.length > 0) {
+                      <div class="activities-section">
+                        <span class="stat-label mb-2 d-block">Actividades Destacadas</span>
+                        <div class="d-flex gap-2 flex-wrap">
+                          @for (act of dest.activities.slice(0, 2); track act.activityName) {
+                            <span class="info-pill">
+                              <i class="pi pi-compass me-1"></i> {{ act.activityName }}
+                            </span>
+                          }
+                        </div>
+                      </div>
                     }
                   </div>
                 </div>
