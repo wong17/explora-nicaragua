@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -31,6 +31,7 @@ export class Destinations implements OnInit {
   private toaster = inject(ToasterService); 
   private authService = inject(AuthService);
   private sharedFavoriteService = inject(SharedFavoriteService);
+  private route = inject(ActivatedRoute);
 
   destinations = signal<DestinationDto[]>([]);
   searchQuery = signal('');
@@ -39,6 +40,13 @@ export class Destinations implements OnInit {
   ngOnInit() {
     this.loadDestinations();
     this.loadUserFavorites();
+
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        // Si hay una búsqueda en la URL, la ponemos en nuestra señal
+        this.searchQuery.set(params['search']);
+      }
+    });
   }
 
   loadDestinations() {
