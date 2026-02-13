@@ -12,4 +12,4 @@ export * from './services/favorite.service';
 export * from './services/ui/ui.service';
 export * from './services/auth/auth.service';
 export * from './services/toastr/toaster.service';
-export * from './services/favorite/shared.favorite.service';
+export * from './services/shared-favorite/shared.favorite.service';
