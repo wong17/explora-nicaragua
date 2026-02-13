@@ -90,9 +90,9 @@ export class TouristMap implements OnInit, AfterViewInit, OnDestroy {
 
         const marker = L.marker([dest.latitude, dest.longitude], { icon: customIcon })
           .bindPopup(popupHtml, {
-            maxWidth: 300,
+            maxWidth: 250,
             minWidth: 260,
-            className: 'premium-popup'
+            className: 'popup'
           });
 
         marker.addTo(this.map);

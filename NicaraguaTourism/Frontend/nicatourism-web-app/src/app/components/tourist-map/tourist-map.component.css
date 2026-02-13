@@ -26,22 +26,22 @@
     pointer-events: none;
 }
 
-.custom-div-icon {
+::ng-deep .custom-div-icon {
     background: transparent;
     border: none;
 }
 
-.pulse-marker {
+::ng-deep .pulse-marker {
     width: 30px;
     height: 30px;
-    background-color: var(--primary-green);
+    background-color: #3b82f6;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 0.9rem;
-    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
     animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
     cursor: pointer;
     border: 2px solid #ffffff;
@@ -49,25 +49,29 @@
 
 @keyframes pulse {
     to {
-        box-shadow: 0 0 0 25px rgba(22, 163, 74, 0);
+        box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
     }
 }
 
-::ng-deep .premium-popup .leaflet-popup-content-wrapper,
-::ng-deep .premium-popup .leaflet-popup-tip {
-    background: rgba(24, 24, 27, 0.85) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
+::ng-deep .popup .leaflet-popup-content-wrapper {
+    background: rgba(24, 24, 27, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    color: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
     padding: 0;
     overflow: hidden;
 }
 
-::ng-deep .premium-popup .leaflet-popup-content {
+::ng-deep .popup .leaflet-popup-tip {
+    background: rgba(24, 24, 27, 0.95) !important;
+}
+
+::ng-deep .popup .leaflet-popup-content {
     margin: 0 !important;
-    width: 260px !important;
+    width: 250px !important;
+    line-height: 1.4;
 }
 
 ::ng-deep .leaflet-popup-close-button {
@@ -76,68 +80,67 @@
     z-index: 10;
 }
 
-.map-popup-card {
+::ng-deep .popup .map-popup-card {
     display: flex;
     flex-direction: column;
 }
 
-.popup-img-container {
+::ng-deep .popup .popup-img-container {
     position: relative;
-    height: 120px;
+    height: 100px;
     width: 100%;
 }
 
-.popup-img-container img {
+::ng-deep .popup .popup-img-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.popup-badge {
+::ng-deep .popup .popup-badge {
     position: absolute;
-    bottom: 8px;
-    left: 8px;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
+    bottom: 5px;
+    left: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.65rem;
     font-weight: bold;
-    color: #4ade80;
+    color: #60a5fa;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.popup-content {
-    padding: 15px;
+::ng-deep .popup .popup-content {
+    padding: 12px;
 }
 
-.popup-content h4 {
-    font-size: 1.1rem;
+::ng-deep .popup .popup-content h4 {
+    font-size: 1rem;
     font-weight: bold;
-    margin: 0 0 8px 0;
+    margin: 0 0 5px 0 !important;
     color: white;
 }
 
-.popup-content p {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin: 0 0 15px 0;
+::ng-deep .popup .popup-content p {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 12px 0 !important;
 }
 
-.popup-btn {
+::ng-deep .popup .popup-btn {
     display: block;
     width: 100%;
     text-align: center;
-    background-color: var(--primary-green);
+    background-color: #3b82f6;
     color: white !important;
     text-decoration: none;
-    padding: 8px 0;
-    border-radius: 8px;
+    padding: 6px 0;
+    border-radius: 6px;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     transition: background 0.3s;
 }
 
-.popup-btn:hover {
-    background-color: var(--hover-green);
+::ng-deep .popup .popup-btn:hover {
+    background-color: #2563eb;
 }
