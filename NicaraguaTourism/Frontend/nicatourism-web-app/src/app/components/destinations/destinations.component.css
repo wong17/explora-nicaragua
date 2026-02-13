@@ -105,7 +105,6 @@
     animation: brilloGuardabarranco 12s linear infinite;
 }
 
-/* La nueva animación de barrido continuo */
 @keyframes brilloGuardabarranco {
     0% {
         background-position: 200% center;
