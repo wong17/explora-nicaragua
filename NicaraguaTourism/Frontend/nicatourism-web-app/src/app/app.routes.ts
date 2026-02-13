@@ -11,7 +11,7 @@ export const routes: Routes = [
     },
     {
         path: 'destinos',
-        loadComponent: () => import('./components/destinations/destinations.component').then(m => m.DestinationsComponent),
+        loadComponent: () => import('./components/destinations/destinations.component').then(m => m.Destinations),
         title: 'Destinos | Explora Nicaragua'
     },
     {

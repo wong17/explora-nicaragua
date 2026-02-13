@@ -15,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './destinations.component.html',
   styleUrl: './destinations.component.css',
 })
-export class DestinationsComponent implements OnInit {
+export class Destinations implements OnInit {
 
   private destinationService = inject(DestinationService);
   private toaster = inject(ToasterService); 
