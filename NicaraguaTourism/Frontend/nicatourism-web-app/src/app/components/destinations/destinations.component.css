@@ -335,7 +335,7 @@
 
 .info-pill {
     font-size: 0.8rem;
-    color: var(--primary-green);
+    color: #ffffff;
     background: rgba(22, 163, 74, 0.15);
     padding: 5px 12px;
     border-radius: 8px;
