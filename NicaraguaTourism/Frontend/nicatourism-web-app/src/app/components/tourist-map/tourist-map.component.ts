@@ -39,7 +39,7 @@ export class TouristMap implements OnInit, AfterViewInit, OnDestroy {
       zoomControl: false
     });
 
-    L.control.zoom({ position: 'topright' }).addTo(this.map);
+    L.control.zoom({ position: 'bottomright' }).addTo(this.map);
 
     L.tileLayer(this.TILE_LAYER_URL, {
       attribution: '&copy; OpenStreetMap contributors',
