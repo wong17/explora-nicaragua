@@ -35,8 +35,18 @@ export class TouristMap implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initMap(): void {
+    const nicaraguaBounds = L.latLngBounds(
+      [10.0, -88.0], // Esquina inferior izquierda (Océano Pacífico)
+      [15.5, -82.5]  // Esquina superior derecha (Caribe/Honduras)
+    );
+
     this.map = L.map('touristMap', {
-      zoomControl: false
+      zoomControl: false,
+      minZoom: 7.0,
+      maxBounds: nicaraguaBounds,
+      maxBoundsViscosity: 0.8,
+      zoomSnap: 0.1,
+      zoomDelta: 0.5
     });
 
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
@@ -46,7 +56,7 @@ export class TouristMap implements OnInit, AfterViewInit, OnDestroy {
       maxZoom: this.MAX_ZOOM
     }).addTo(this.map);
 
-    this.map.setView([12.6, -85.0], 7);
+    this.map.setView([13.2, -85.0], 8.5);
   }
 
   private loadDestinations() {
@@ -99,13 +109,6 @@ export class TouristMap implements OnInit, AfterViewInit, OnDestroy {
         leafletMarkers.push(marker);
       }
     });
-
-    if (leafletMarkers.length > 0) {
-      const group = L.featureGroup(leafletMarkers);
-      this.map.fitBounds(group.getBounds(), {
-        padding: [50, 50]
-      });
-    }
   }
 
   private getCoverImage(dest: DestinationDto): string {
