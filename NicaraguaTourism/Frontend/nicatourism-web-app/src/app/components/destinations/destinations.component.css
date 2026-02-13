@@ -311,12 +311,12 @@
 }
 
 .stat-label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.5);
-    display: block;
-    margin-bottom: 0.3rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
 }
 
 .stat-value {
@@ -336,13 +336,17 @@
 .info-pill {
     font-size: 0.8rem;
     color: var(--primary-green);
-    background: rgba(22, 163, 74, 0.1);
+    background: rgba(22, 163, 74, 0.15);
     padding: 5px 12px;
     border-radius: 8px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgba(22, 163, 74, 0.2);
+    border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.info-pill i {
+    color: var(--primary-green);
 }
 
 .empty-icon-wrapper {
@@ -442,4 +446,46 @@
     .filters-sticky-wrapper {
         top: 4rem;
     }
+}
+
+/* Colores para la dificultad de acceso al destino turistico */
+.color-facil {
+    color: #4ade80 !important;
+}
+
+.color-moderado {
+    color: #60a5fa !important;
+}
+
+.color-dificil {
+    color: #fb923c !important;
+}
+
+.color-extremo {
+    color: #f87171 !important;
+}
+
+.color-default {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Colores para la temperatura media del destino turistico */
+.color-temp-cold {
+    color: #67e8f9 !important;
+}
+
+.color-temp-mild {
+    color: #a3e635 !important;
+}
+
+.color-temp-warm {
+    color: #fbbf24 !important;
+}
+
+.color-temp-hot {
+    color: #ef4444 !important;
+}
+
+.icon-sun-fixed {
+    color: #f59e0b !important;
 }

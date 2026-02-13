@@ -73,9 +73,12 @@
                       @if (dest.averageWeather) {
                         <div class="col-6">
                           <div class="stat-item">
-                            <span class="stat-label">Temperatura</span>
-                            <span class="stat-value">
-                              <i class="pi pi-sun text-primary-green"></i>
+                            <span class="stat-label">Temperatura Media</span>
+                            <span
+                              class="stat-value"
+                              [ngClass]="getTemperatureClass(dest.averageWeather)"
+                            >
+                              <i class="pi pi-sun icon-sun-fixed me-1"></i>
                               {{ dest.averageWeather }}°C
                             </span>
                           </div>
@@ -84,9 +87,12 @@
                       @if (dest.accessDifficulty) {
                         <div class="col-6">
                           <div class="stat-item">
-                            <span class="stat-label">Dificultad</span>
-                            <span class="stat-value">
-                              <i class="pi pi-directions text-primary-green"></i>
+                            <span class="stat-label">Dificultad de Acceso</span>
+                            <span
+                              class="stat-value"
+                              [ngClass]="getDifficultyClass(dest.accessDifficulty)"
+                            >
+                              <i class="pi pi-directions me-1"></i>
                               {{ dest.accessDifficulty }}
                             </span>
                           </div>

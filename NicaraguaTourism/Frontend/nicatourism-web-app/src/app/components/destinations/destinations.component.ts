@@ -182,4 +182,30 @@ export class Destinations implements OnInit {
 
     return '/assets/images/nicaragua-wallpaper.webp';
   }
+
+  // Devuelve una clase CSS según la dificultad
+  getDifficultyClass(difficulty: string | null | undefined): string {
+    if (!difficulty) return 'color-default';
+
+    switch (difficulty.trim()) {
+      case 'Fácil': return 'color-facil';
+      case 'Moderado': return 'color-moderado';
+      case 'Difícil': return 'color-dificil';
+      case 'Extremo': return 'color-extremo';
+      default: return 'color-default';
+    }
+  }
+
+  // Devuelve una clase CSS según la temperatura
+  getTemperatureClass(temp: string | null | undefined): string {
+    if (!temp) return 'color-default';
+
+    const tempNum = parseFloat(temp);
+    if (isNaN(tempNum)) return 'color-default';
+
+    if (tempNum <= 22) return 'color-temp-cold';
+    if (tempNum <= 27) return 'color-temp-mild';
+    if (tempNum <= 32) return 'color-temp-warm';
+    return 'color-temp-hot';
+  }
 }
