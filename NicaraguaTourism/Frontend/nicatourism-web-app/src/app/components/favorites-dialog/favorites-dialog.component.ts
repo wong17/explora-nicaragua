@@ -8,6 +8,7 @@ import {
   FavoriteDto, 
   FavoriteInteractionDto, 
   FavoriteService, 
+  SharedFavoriteService, 
   ToasterService 
 } from '../../core/core.index';
 import { DialogModule } from "primeng/dialog";
@@ -25,6 +26,7 @@ export class FavoritesDialog {
   private favoriteService = inject(FavoriteService);
   private toasterService = inject(ToasterService);
   private authService = inject(AuthService);
+  private sharedFavoriteService = inject(SharedFavoriteService);
 
   visible = model<boolean>(false);
 
@@ -98,6 +100,13 @@ export class FavoritesDialog {
           this.favorites.update(currentList =>
             currentList.filter(f => f.destination?.destinationId !== id)
           );
+          // Eliminamos el ID de la señal global para que las tarjetas de fondo se enteren
+          this.sharedFavoriteService.sharedFavoriteIds.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(id);
+            return newSet;
+          });
+
           this.toasterService.success('Eliminado de favoritos');
           return;
         }
