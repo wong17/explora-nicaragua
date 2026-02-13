@@ -1,29 +1,33 @@
 <section class="destinations-page">
-  <div class="header-container container pt-5 pb-4 text-center">
-    <h1 class="text-white fw-bold display-4 mb-2 animate-fade-down">Explora Destinos</h1>
-    <p class="text-secondary lead animate-fade-up">
-      Encuentra tu próximo destino ideal en Nicaragua
-    </p>
+  <div class="destinations-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content animate-fade-down">
+      <h1 class="hero-title">Descubre Nicaragua</h1>
+      <p class="text-secondary lead mb-0">
+        Desde volcanes activos hasta playas vírgenes. <br class="d-none d-md-block" />
+        Tu próxima gran historia comienza aquí.
+      </p>
+    </div>
   </div>
 
   <div class="filters-sticky-wrapper">
-    <div class="container d-flex justify-content-center">
-      <div class="search-wrapper">
-        <span class="p-input-icon-left w-100">
-          <i class="pi pi-search"></i>
+    <div class="container">
+      <div class="search-container">
+        <div class="search-glass">
+          <i class="pi pi-search search-icon-wrapper"></i>
           <input
             type="text"
             pInputText
             [(ngModel)]="searchQuery"
-            placeholder="Buscar por nombre o ubicación..."
+            placeholder="¿Qué lugar quieres explorar hoy?"
             class="custom-search-input"
           />
-        </span>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="container py-5">
+  <div class="container py-5 main-content">
     @if (loading()) {
       <div class="row g-4">
         @for (item of [1, 2, 3, 4, 5, 6]; track item) {
@@ -44,19 +48,15 @@
                     [alt]="dest.name"
                     loading="lazy"
                   />
-
                   @if (dest.location) {
                     <div class="card-badge">
                       <i class="pi pi-map-marker me-1"></i> {{ dest.location }}
                     </div>
                   }
-
                   <button
                     class="favorite-btn"
                     [class.active]="isFavorite(dest.destinationId)"
                     (click)="toggleFavorite($event, dest.destinationId)"
-                    pTooltip="Guardar en favoritos"
-                    tooltipPosition="left"
                   >
                     <i
                       class="pi"
@@ -65,26 +65,10 @@
                     ></i>
                   </button>
                 </div>
-
                 <div class="card-body">
                   <h3 class="card-title text-white mb-2">{{ dest.name }}</h3>
-
-                  <p class="description-text text-secondary">
-                    {{ dest.shortDescription }}
-                  </p>
-
-                  <div class="card-footer-info d-flex gap-3 mt-3">
-                    @if (dest.accessDifficulty) {
-                      <span class="info-pill">
-                        <i class="pi pi-directions me-1"></i> {{ dest.accessDifficulty }}
-                      </span>
-                    }
-                    @if (dest.averageWeather) {
-                      <span class="info-pill">
-                        <i class="pi pi-sun me-1"></i> {{ dest.averageWeather }}
-                      </span>
-                    }
-                  </div>
+                  <p class="description-text text-secondary">{{ dest.shortDescription }}</p>
+                  <div class="card-footer-info d-flex gap-3 mt-3"></div>
                 </div>
               </a>
             </div>
@@ -92,11 +76,11 @@
         </div>
       } @else {
         <div class="text-center py-5">
-          <div class="empty-icon-wrapper mb-3">
-            <i class="pi pi-search"></i>
+          <div class="empty-icon-wrapper mb-3 mx-auto">
+            <i class="pi pi-compass"></i>
           </div>
-          <h3 class="text-white">No encontramos destinos</h3>
-          <p class="text-secondary">Intenta con otro término de búsqueda.</p>
+          <h3 class="text-white">No encontramos ese destino</h3>
+          <p class="text-secondary">Prueba buscando "Volcán" o "Playa".</p>
         </div>
       }
     }
