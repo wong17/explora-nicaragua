@@ -1,0 +1,246 @@
+:host {
+    --card-bg: #18181b;
+    --bg-dark: #0f0f0f;
+}
+
+.destinations-page {
+    background-color: var(--bg-dark);
+    min-height: 100vh;
+    padding-top: 4rem;
+}
+
+.filters-sticky-wrapper {
+    position: sticky;
+    top: 4.5rem;
+    z-index: 40;
+    background: rgba(15, 15, 15, 0.8);
+    backdrop-filter: blur(12px);
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.search-wrapper {
+    width: 100%;
+    max-width: 600px;
+}
+
+.custom-search-input {
+    background: #27272a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding-left: 2.8rem !important;
+    padding-right: 1.5rem !important;
+    width: 100%;
+    height: 50px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.custom-search-input:focus {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2) !important;
+    background: #202023 !important;
+}
+
+.p-input-icon-left i {
+    left: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dest-card {
+    display: block;
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.dest-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(22, 163, 74, 0.4);
+}
+
+/* Imagen */
+.card-img-wrapper {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+}
+
+.dest-card:hover .card-img-wrapper img {
+    transform: scale(1.08);
+}
+
+/* Badge Ubicación */
+.card-badge {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Botón Favorito */
+.favorite-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    /* Translucido */
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+    color: white;
+}
+
+.favorite-btn:hover {
+    background: white;
+    color: #ef4444;
+    transform: scale(1.1);
+}
+
+.favorite-btn.active {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* Contenido */
+.card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.description-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    /* Limitar a 3 líneas y poner ... */
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: auto;
+    /* Empuja los pills hacia abajo */
+}
+
+.info-pill {
+    font-size: 0.8rem;
+    color: var(--primary-green);
+    background: rgba(22, 163, 74, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Estado Vacío */
+.empty-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.empty-icon-wrapper i {
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Skeleton Loading */
+.skeleton-card {
+    height: 380px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Animaciones */
+.animate-fade-down {
+    animation: fadeDown 0.8s ease-out;
+}
+
+.animate-fade-up {
+    animation: fadeUp 0.8s ease-out backwards;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -10,6 +10,11 @@ export const routes: Routes = [
         title: 'Inicio | Explora Nicaragua'
     },
     {
+        path: 'destinos',
+        loadComponent: () => import('./components/destinations/destinations.component').then(m => m.DestinationsComponent),
+        title: 'Destinos | Explora Nicaragua'
+    },
+    {
         path: 'admin/destinos',
         component: DestinationManager,
         title: 'Gestión de Destinos | Explora Nicaragua'
