@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse, DestinationDto, DestinationRegisterDto, DestinationSummaryDto, DestinationUpdateDto } from '../core.index';
+import { ApiResponse, DestinationDto, DestinationRegisterDto, DestinationUpdateDto } from '../core.index';
 import { environment } from '../../../environments/environment';
 import { PaginatedResult } from '../models/paginated-result';
 
@@ -33,11 +33,11 @@ export class DestinationService {
   }
 
   // GET: api/destinations/get_paginated
-  getAll(page?: number, rows?: number): Observable<ApiResponse<PaginatedResult<DestinationSummaryDto>>> {
+  getAll(page?: number, rows?: number): Observable<ApiResponse<PaginatedResult<DestinationDto>>> {
     let params = new HttpParams()
       .set('page', page ? page.toString() : '1')
       .set('rows', rows ? rows.toString() : '50');
-    return this.http.get<ApiResponse<PaginatedResult<DestinationSummaryDto>>>(`${this.apiUrl}/destinations/get_paginated`, { params });
+    return this.http.get<ApiResponse<PaginatedResult<DestinationDto>>>(`${this.apiUrl}/destinations/get_paginated`, { params });
   }
 
   // GET: api/destinations/get_by_id/{id}

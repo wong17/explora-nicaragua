@@ -347,7 +347,7 @@ export class DestinationForm implements OnInit, OnDestroy {
           this.toasterService.success(resp.message, 'Éxito');
           this.router.navigate(['/admin/destinos']);
         } else {
-          this.toasterService.error(resp.message, 'Error en servidor');
+          this.toasterService.error(resp.message ?? 'Error al guardar destino', 'Error en servidor');
         }
       },
       error: (err) => {

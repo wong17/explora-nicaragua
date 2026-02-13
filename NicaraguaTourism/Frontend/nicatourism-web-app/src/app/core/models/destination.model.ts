@@ -1,6 +1,6 @@
 import { ActivityInsertDto, DestinationImageInsertDto } from "../core.index";
 
-// Para listar (GET /get_all) - Versión resumida
+// Para listar (GET /get_paginated) - Versión resumida
 export interface DestinationSummaryDto {
     destinationId: number;
     name: string;
@@ -11,7 +11,7 @@ export interface DestinationSummaryDto {
     coverImage?: string | null;
 }
 
-// Para detalles completos (GET /get_by_id/{id})
+// Para detalles completos (GET /get_by_id/{id}) o (GET /get_paginated)
 export interface DestinationDto {
     destinationId: number;
     name: string;
