@@ -34,7 +34,7 @@ export class Destinations implements OnInit {
   searchQuery = signal('');
   loading = signal(true);
 
-  favoritesSet = new Set<number>();
+  favoritesSet = signal<Set<number>>(new Set<number>());
 
   ngOnInit() {
     this.loadDestinations();
@@ -72,7 +72,7 @@ export class Destinations implements OnInit {
             .map(fav => fav.destination?.destinationId)
             .filter(id => id != null) as number[];
 
-          this.favoritesSet = new Set<number>(favoriteIds);
+          this.favoritesSet.set(new Set<number>(favoriteIds));
         }
       },
       error: (err: HttpErrorResponse) => console.error(err.error.message || 'No se pudieron cargar los favoritos', err)
@@ -118,41 +118,53 @@ export class Destinations implements OnInit {
       destinationId: destId
     };
 
-    const isFav = this.favoritesSet.has(destId);
+    const isFav = this.favoritesSet().has(destId);
 
     if (isFav) {
-      this.favoritesSet.delete(destId);
+      this.favoritesSet.update(set => {
+        const newSet = new Set(set);
+        newSet.delete(destId);
+        return newSet;
+      });
 
       this.favoriteService.remove(interaction).subscribe({
         next: (response) => {
           if (response.isSuccess === ApiResponseCode.Success) {
             this.toaster.info('Destino quitado de tu lista', 'Removido');
           } else {
-            this.favoritesSet.add(destId); // Revertir si falla
+            this.favoritesSet.update(set => new Set(set).add(destId)); // Revertir si falla
             this.toaster.error('No se pudo quitar de favoritos', 'Error');
           }
         },
         error: (err: HttpErrorResponse) => {
-          this.favoritesSet.add(destId); // Revertir si hay error de red
+          this.favoritesSet.update(set => new Set(set).add(destId)); // Revertir si hay error de red
           this.toaster.error(err.error.message || 'Error de conexión', 'Error');
         }
       });
 
     } else {
       // Actualización optimista: agregar
-      this.favoritesSet.add(destId);
+      this.favoritesSet.update(set => new Set(set).add(destId));
 
       this.favoriteService.add(interaction).subscribe({
         next: (response) => {
           if (response.isSuccess === ApiResponseCode.Success) {
             this.toaster.success('Destino agregado a favoritos', '¡Guardado!');
           } else {
-            this.favoritesSet.delete(destId); // Revertir si falla
+            this.favoritesSet.update(set => {
+              const newSet = new Set(set);
+              newSet.delete(destId);
+              return newSet;
+            }); // Revertir si falla
             this.toaster.error('No se pudo agregar a favoritos', 'Error');
           }
         },
         error: (err: HttpErrorResponse) => {
-          this.favoritesSet.delete(destId); // Revertir si hay error de red
+          this.favoritesSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(destId);
+            return newSet;
+          }); // Revertir si hay error de red
           this.toaster.error(err.error.message || 'Error de conexión', 'Error');
         }
       });
@@ -160,7 +172,7 @@ export class Destinations implements OnInit {
   }
 
   isFavorite(id: number): boolean {
-    return this.favoritesSet.has(id);
+    return this.favoritesSet().has(id);
   }
 
   getCoverImage(dest: DestinationDto): string {

@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, model, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './favorites-dialog.component.html',
   styleUrl: './favorites-dialog.component.css',
 })
-export class FavoritesDialog implements OnInit {
+export class FavoritesDialog {
 
   private favoriteService = inject(FavoriteService);
   private toasterService = inject(ToasterService);
@@ -31,6 +31,15 @@ export class FavoritesDialog implements OnInit {
   isLoading = signal<boolean>(false);
   favorites = signal<FavoriteDto[]>([]);
   searchQuery = signal<string>('');
+
+  constructor() {
+    // Este efecto se ejecuta cada vez que 'visible' cambia
+    effect(() => {
+      if (this.visible() && this.authService.isLoggedIn()) {
+        this.loadFavorites();
+      }
+    });
+  }
 
   filteredFavorites = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
@@ -48,12 +57,6 @@ export class FavoritesDialog implements OnInit {
       );
     });
   });
-
-  ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.loadFavorites();
-    }
-  }
 
   loadFavorites() {
     this.isLoading.set(true);
