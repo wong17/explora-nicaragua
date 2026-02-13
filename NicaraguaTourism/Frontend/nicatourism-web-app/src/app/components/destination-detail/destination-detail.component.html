@@ -1,0 +1,79 @@
+@if (loading()) {
+  <div class="loading-container d-flex justify-content-center align-items-center">
+    <div class="spinner-border text-success" role="status"></div>
+  </div>
+} @else if (destination(); as dest) {
+  <header class="destination-hero" [style.backgroundImage]="'url(' + getCoverImage() + ')'">
+    <div class="hero-overlay"></div>
+    <div class="hero-content container">
+      <span class="badge bg-success mb-2">{{ dest.accessDifficulty }}</span>
+      <h1 class="display-3 text-white fw-bold">{{ dest.name }}</h1>
+      <p class="text-white opacity-75 fs-5"><i class="pi pi-map-marker"></i> {{ dest.location }}</p>
+    </div>
+  </header>
+
+  <main class="container py-5 text-white fade-content-up">
+    <div class="row">
+      <div class="col-md-8">
+        <h3 class="fw-bold mb-3 d-flex align-items-center">Sobre este destino</h3>
+
+        <p class="lead text-light opacity-100 mb-4">
+          {{ dest.shortDescription }}
+        </p>
+        <p class="text-light opacity-75" style="line-height: 1.8">
+          {{ dest.longDescription }}
+        </p>
+
+        <h4 class="mt-5 mb-4 d-flex align-items-center">Actividades</h4>
+        <div class="d-flex flex-wrap gap-2">
+          @for (act of dest.activities; track act.activityName) {
+            <span class="activity-pill">
+              @if (act.iconName) {
+                <i class="pi pi-compass"></i>
+              }
+              <span>{{ act.activityName }}</span>
+            </span>
+          } @empty {
+            <span class="text-secondary">No hay actividades listadas para este destino.</span>
+          }
+        </div>
+      </div>
+
+      <div class="col-md-4 mt-4 mt-md-0">
+        <div class="card bg-dark border-secondary text-white p-4 sticky-top detail-card-sticky">
+          <h4 class="fw-bold border-bottom border-secondary pb-3 mb-4 d-flex align-items-center">
+            <i class="pi pi-list text-success me-2"></i> Detalles
+          </h4>
+
+          <div class="d-flex align-items-center mb-4">
+            <i class="pi pi-sun fs-3 me-3 text-warning"></i>
+            <div>
+              <small class="text-light opacity-75 d-block mb-1">Clima Promedio</small>
+              <span class="fs-5 fw-semibold">{{ dest.averageWeather }}°C</span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-5">
+            <i class="pi pi-map-marker fs-3 me-3 text-info"></i>
+            <div>
+              <small class="text-light opacity-75 d-block mb-1">Dificultad de Acceso</small>
+              <span class="fs-5 fw-semibold">{{ dest.accessDifficulty }}</span>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-success w-100 fw-bold py-2 fs-5 d-flex justify-content-center align-items-center gap-2"
+          >
+            <i class="pi pi-heart"></i> Añadir a Favoritos
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+} @else {
+  <div class="container text-center py-5 text-white">
+    <h2>Destino no encontrado</h2>
+    <p class="text-secondary">Parece que el destino que buscas no existe o fue eliminado.</p>
+    <button class="btn btn-outline-light mt-3" routerLink="/destinos">Volver a explorar</button>
+  </div>
+}

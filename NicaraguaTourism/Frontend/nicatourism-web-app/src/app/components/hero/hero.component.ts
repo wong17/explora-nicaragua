@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-hero',
-  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule],
+  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, RouterLink],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.css',
 })

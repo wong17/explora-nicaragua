@@ -3,6 +3,7 @@ import { DestinationManager } from './components/destination-manager/destination
 import { DestinationForm } from './components/destination-manager/destination-form/destination-form.component';
 import { Home } from './components/home/home.component';
 import { TouristMap } from './components/tourist-map/tourist-map.component';
+import { DestinationDetail } from './components/destination-detail/destination-detail.component';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,11 @@ export const routes: Routes = [
         path: 'mapa', 
         component: TouristMap, 
         title: 'Mapa Turístico | Explora Nicaragua' 
+    },
+    { 
+        path: 'destino/:id', 
+        component: DestinationDetail, 
+        title: 'Detalle del Destino | Explora Nicaragua' 
     },
     {
         path: '**',

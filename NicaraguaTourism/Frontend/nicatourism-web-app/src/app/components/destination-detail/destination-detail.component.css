@@ -1,0 +1,71 @@
+:host {
+    display: block;
+    background-color: #0f0f0f;
+    min-height: 100vh;
+}
+
+.destination-hero {
+    position: relative;
+    width: 100%;
+    height: 65vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 5rem;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 15, 15, 0) 0%,
+        rgba(15, 15, 15, 0.3) 45%,
+        rgba(15, 15, 15, 0.9) 85%,
+        #0f0f0f 100%
+    );
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.fade-content-up {
+    position: relative;
+    z-index: 10;
+    margin-top: -2rem;
+}
+
+.loading-container {
+    height: 100vh;
+}
+
+.detail-card-sticky {
+    top: 100px;
+}
+
+.activity-pill {
+    font-size: 0.9rem;
+    color: #ffffff !important;
+    background: rgba(22, 163, 74, 0.15);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.activity-pill i {
+    color: var(--primary-green) !important;
+    font-size: 1rem;
+}
