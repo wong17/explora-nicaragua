@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { DestinationManager } from './components/destination-manager/destination-manager.component';
 import { DestinationForm } from './components/destination-manager/destination-form/destination-form.component';
 import { Home } from './components/home/home.component';
+import { TouristMap } from './components/tourist-map/tourist-map.component';
 
 export const routes: Routes = [
     {
@@ -28,6 +29,11 @@ export const routes: Routes = [
         path: 'admin/destinos/editar/:id',
         component: DestinationForm,
         title: 'Editar Destino'
+    },
+    { 
+        path: 'mapa', 
+        component: TouristMap, 
+        title: 'Mapa Turístico | Explora Nicaragua' 
     },
     {
         path: '**',
