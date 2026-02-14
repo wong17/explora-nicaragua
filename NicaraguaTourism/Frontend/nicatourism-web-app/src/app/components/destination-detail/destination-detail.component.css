@@ -69,3 +69,15 @@
     color: var(--primary-green) !important;
     font-size: 1rem;
 }
+
+.favorite-btn {
+    transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.favorite-btn:active {
+    transform: translateY(0);
+}

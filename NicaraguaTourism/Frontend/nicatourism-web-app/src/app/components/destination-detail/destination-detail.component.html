@@ -62,9 +62,19 @@
           </div>
 
           <button
-            class="btn btn-success w-100 fw-bold py-2 fs-5 d-flex justify-content-center align-items-center gap-2"
+            class="btn btn-success w-100 fw-bold py-2 fs-5 d-flex justify-content-center align-items-center gap-2 favorite-btn"
+            [class.btn-success]="!isFavorite(dest.destinationId)"
+            [class.btn-outline-secondary]="isFavorite(dest.destinationId)"
+            (click)="toggleFavorite()"
           >
-            <i class="pi pi-heart"></i> Añadir a Favoritos
+            <i
+              class="pi"
+              [class.pi-heart]="!isFavorite(dest.destinationId)"
+              [class.pi-heart-fill]="isFavorite(dest.destinationId)"
+              [class.text-danger]="isFavorite(dest.destinationId)"
+            >
+            </i>
+            {{ isFavorite(dest.destinationId) ? 'En tus Favoritos' : 'Añadir a Favoritos' }}
           </button>
         </div>
       </div>
