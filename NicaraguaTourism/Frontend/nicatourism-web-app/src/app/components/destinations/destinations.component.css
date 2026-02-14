@@ -11,28 +11,6 @@
     overflow: hidden;
 }
 
-.destinations-page::before,
-.destinations-page::after {
-    content: '';
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(22, 163, 74, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.destinations-page::before {
-    top: -10%;
-    left: -10%;
-}
-
-.destinations-page::after {
-    bottom: 20%;
-    right: -10%;
-}
-
 .destinations-hero {
     position: relative;
     height: 55vh;
@@ -40,7 +18,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding-bottom: 7rem;
+    padding-bottom: 9rem;
     align-items: center;
     text-align: center;
     background-image: url('/assets/images/categories/destino_large.webp');
@@ -68,7 +46,7 @@
     z-index: 2;
     max-width: 800px;
     padding: 0 1.5rem;
-    margin-top: 2rem;
+    margin-top: 0;
 }
 
 .hero-content p.lead {
