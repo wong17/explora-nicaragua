@@ -79,7 +79,37 @@
         </div>
       </div>
     </div>
+
+    @if (dest.images && dest.images.length > 0) {
+      <div class="mt-5 pt-5 border-top border-secondary border-opacity-50">
+        <h3 class="fw-bold mb-4 d-flex align-items-center">Galería de Fotos</h3>
+
+        <div class="photo-gallery">
+          @for (img of dest.images; track img.imageUrl; let i = $index) {
+            <div
+              class="gallery-item animate-fade-up"
+              [style.animation-delay]="i * 0.15 + 's'"
+              (click)="selectedImage.set(img.imageUrl)"
+            >
+              <img [src]="img.imageUrl" [alt]="dest.name + ' - Foto de galería'" loading="lazy" />
+            </div>
+          }
+        </div>
+      </div>
+    }
   </main>
+
+  @if (selectedImage()) {
+    <div class="lightbox-overlay" (click)="selectedImage.set(null)">
+      <div class="lightbox-content-wrapper" (click)="$event.stopPropagation()">
+        <button class="lightbox-close" (click)="selectedImage.set(null)" aria-label="Cerrar imagen">
+          <i class="pi pi-times"></i>
+        </button>
+
+        <img [src]="selectedImage()" alt="Vista ampliada" class="lightbox-img" />
+      </div>
+    </div>
+  }
 } @else {
   <div class="container text-center py-5 text-white">
     <h2>Destino no encontrado</h2>

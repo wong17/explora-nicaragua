@@ -22,6 +22,7 @@ export class DestinationDetail implements OnInit {
 
   destination = signal<DestinationDto | null>(null);
   loading = signal<boolean>(true);
+  selectedImage = signal<string | null>(null);
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
