@@ -39,7 +39,8 @@
     min-height: 450px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
+    padding-bottom: 7rem;
     align-items: center;
     text-align: center;
     background-image: url('/assets/images/categories/destino_large.webp');
