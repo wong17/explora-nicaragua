@@ -144,3 +144,28 @@
 ::ng-deep .popup .popup-btn:hover {
     background-color: #2563eb;
 }
+
+@media (max-width: 768px) {
+    .map-overlay-header {
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%;
+        max-width: 300px;
+        padding: 0.8rem 1rem;
+        text-align: center;
+    }
+
+    .map-overlay-header h2 {
+        font-size: 1.2rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .map-overlay-header p {
+        font-size: 0.8rem !important;
+    }
+
+    ::ng-deep .leaflet-control-zoom {
+        margin-bottom: 20px !important;
+    }
+}
