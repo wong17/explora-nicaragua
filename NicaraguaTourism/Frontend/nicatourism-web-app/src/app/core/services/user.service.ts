@@ -2,8 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ApiResponse, UserDto, UserLoginDto, UserRegisterDto, UserUpdateDto } from '../core.index';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { PaginatedResult } from '../models/paginated-result';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
