@@ -43,7 +43,7 @@
             <div class="col-md-6 col-lg-4 animate-fade-up">
               <a [routerLink]="['/destino', dest.destinationId]" class="dest-card">
                 <div class="card-img-wrapper">
-                  <img [src]="getCoverImage(dest)" [alt]="dest.name" loading="lazy" />
+                  <img [src]="getCoverImage(dest)" [alt]="dest.name" />
 
                   @if (dest.location) {
                     <div class="card-badge">

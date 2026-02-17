@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "nicatourism-web-app",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.nicatourism.dev",
   "build": {
     "frontendDist": "../dist/nicatourism-web-app/browser",
     "devUrl": "http://localhost:4200",
@@ -13,8 +13,8 @@
     "windows": [
       {
         "title": "Explora Nicaragua",
-        "width": 800,
-        "height": 600,
+        "width": 1280,
+        "height": 720,
         "resizable": true,
         "fullscreen": false
       }
