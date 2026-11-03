@@ -433,3 +433,15 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+# Local backups, credentials, and environment overrides
+*.[Bb][Aa][Kk]
+[Cc]redenciales*.txt
+[Cc]redentials*.txt
+/Database/Create Azure SQL Database script.sql
+.env.*
+!.env.example
+!.env.sample
+
+# Browser recordings and automation artifacts
+/output/playwright/
+/.playwright-cli/
